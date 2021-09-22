@@ -1,12 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { Box, Text, Heading, Spacer, Link, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Heading,
+  Spacer,
+  Link,
+  Stack,
+  Avatar,
+} from "@chakra-ui/react";
 
 const Home: NextPage = () => {
   const bioFontSize = "1.5em";
   const bioStack = (
-    <Stack>
+    <Stack direction="column">
       <Text fontSize={bioFontSize}>
         I'm a Peruvian engineer currently working at{" "}
         <Link href="https://www.haystack.tv/about-us" isExternal>
@@ -53,16 +60,28 @@ const Home: NextPage = () => {
     </Stack>
   );
   return (
-    <Box m={100} mt={20} mr={100}>
+    <Box m={100} mt={20} mr={100} maxW={1000}>
       <Head>
         <title>Kevin Languasco</title>
-        <meta name="description" content="Kevin's personal website" />
+        <meta name="description" content="Kevin Languasco's personal website" />
+        <meta
+          name="keywords"
+          content="data engineering, data science, python, software engineering, Kevin Languasco"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
+        <Avatar
+          src="https://avatars.githubusercontent.com/u/3322228"
+          objectFit="cover"
+          width={200}
+          height={200}
+          alt="Kevin Languasco"
+        />
+        <Spacer m={10} />
         <Heading>Hi! I&apos;m Kevin.</Heading>
-        <Spacer m={5}></Spacer>
+        <Spacer m={5} />
         {bioStack}
       </main>
 
