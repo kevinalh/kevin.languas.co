@@ -59,6 +59,29 @@ const Home: NextPage = () => {
       </Text>
     </Stack>
   );
+  const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
+  const ldSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Kevin Languasco",
+    url: "https://kevin.languas.co",
+    jobTitle: "Data Engineer",
+    alumniOf: [
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Pontifical Catholic University of Peru",
+        sameAs:
+          "https://en.wikipedia.org/wiki/Pontifical_Catholic_University_of_Peru",
+      },
+    ],
+    image: { avatarPicture },
+    email: "mailto:kevin+websiteschema@languas.co",
+    givenName: "Kevin",
+    sameAs: [
+      "https://www.linkedin.com/in/kevinalh/",
+      "https://stackoverflow.com/users/2616577/kevin-languasco/",
+    ],
+  };
   return (
     <Box m={100} mt={20} mr={100} maxW={1000}>
       <Head>
@@ -69,11 +92,15 @@ const Home: NextPage = () => {
           content="data engineering, data science, python, software engineering, Kevin Languasco"
         />
         <link rel="icon" href="/favicon.ico" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldSchema) }}
+        ></script>
       </Head>
 
       <main>
         <Avatar
-          src="https://avatars.githubusercontent.com/u/3322228"
+          src={avatarPicture}
           objectFit="cover"
           width={200}
           height={200}
