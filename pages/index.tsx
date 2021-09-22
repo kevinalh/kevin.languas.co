@@ -83,7 +83,7 @@ const Home: NextPage = () => {
     ],
   };
   return (
-    <Box m={100} mt={20} mr={100} maxW={1000}>
+    <Box m={[50, 50, 100]} mt={[10, 20]} mr={[50, 50, 100]} maxW={1000}>
       <Head>
         <title>Kevin Languasco</title>
         <meta name="description" content="Kevin Languasco's personal website" />
@@ -99,15 +99,17 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Avatar
-          src={avatarPicture}
-          objectFit="cover"
-          width={200}
-          height={200}
-          alt="Kevin Languasco"
-        />
-        <Spacer m={10} />
-        <Heading>Hi! I&apos;m Kevin.</Heading>
+        <Box textAlign={["center", "center", "left"]}>
+          <Avatar
+            src={avatarPicture}
+            objectFit="cover"
+            width={200}
+            height={200}
+            alt="Kevin Languasco"
+          />
+          <Spacer m={10} />
+          <Heading>Hi! I&apos;m Kevin.</Heading>
+        </Box>
         <Spacer m={5} />
         {bioStack}
       </main>
