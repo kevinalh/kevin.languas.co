@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   const bioStack = (
     <Stack direction="column">
       <Text fontSize={bioFontSize}>
-        I'm a Peruvian engineer currently working at{" "}
+        I&apos;m a Peruvian engineer currently working at{" "}
         <Link href="https://www.haystack.tv/about-us" isExternal>
           Haystack News
         </Link>
@@ -39,23 +39,23 @@ const Home: NextPage = () => {
         in Rio de Janeiro.
       </Text>
       <Text fontSize={bioFontSize}>
-        I'm passionate about learning new things, no matter the field. For
-        pretty much my whole life I've been interested in music (a new obscure
-        music genre I can casually bring up in a conversation? Yes please!),
-        computer stuff (OK but <Text as="i">how</Text> does WiFi actually encode
-        data in the air?) and{" "}
+        I&apos;m passionate about learning new things, no matter the field. For
+        pretty much my whole life I&apos;ve been interested in music (a new
+        obscure music genre I can casually bring up in a conversation? Yes
+        please!), computer stuff (OK but <Text as="i">how</Text> does WiFi
+        actually encode data in the air?) and{" "}
         <Link href="https://plato.stanford.edu/entries/platonism-mathematics/">
           philosophy
         </Link>
         .
       </Text>
       <Text fontSize={bioFontSize}>
-        My programming language journey can be summarized as follows: I'm the
-        Python guy who was happy to leave the complexities of C++ behind, only
-        to end up using type hinting everywhere after a few years. Now I'm in
-        the process of getting comfortable with Scala and Rust to get the full
-        experience of a strict type system. On the way, learned some TypeScript
-        too.
+        My programming language journey can be summarized as follows: I&apos;m
+        the Python guy who was happy to leave the complexities of C++ behind,
+        only to end up using type hinting everywhere after a few years. Now
+        I&apos;m in the process of getting comfortable with Scala and Rust to
+        get the full experience of a strict type system. On the way, learned
+        some TypeScript too.
       </Text>
     </Stack>
   );
