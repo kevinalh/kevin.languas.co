@@ -74,7 +74,7 @@ const Home: NextPage = () => {
           "https://en.wikipedia.org/wiki/Pontifical_Catholic_University_of_Peru",
       },
     ],
-    image: { avatarPicture },
+    image: avatarPicture,
     email: "mailto:kevin+websiteschema@languas.co",
     givenName: "Kevin",
     sameAs: [
