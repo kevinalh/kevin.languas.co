@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://kevin.languas.co
+
+# Sitemaps
+Sitemap: https://kevin.languas.co/sitemap.xml

@@ -1178,7 +1178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:11.1.2":
+"@next/env@npm:*, @next/env@npm:11.1.2":
   version: 11.1.2
   resolution: "@next/env@npm:11.1.2"
   checksum: df7a95e840af351b1c37fa6490b2c6330b8f8c587ff8b2212687d7557e99ae5642495095a9a3a15fe4ac2e6fb5b1cdb24ab8fb14e95ad363a5b7b1146ec62d15
