@@ -936,6 +936,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@corex/deepmerge@npm:^2.6.34":
+  version: 2.6.34
+  resolution: "@corex/deepmerge@npm:2.6.34"
+  checksum: 73a396a32f7fc5698f7ad29bc1067d8499cb1767f91b315e6ef01abede34f4342a6c5ed264928f888569db6476a85f9a3f6e5a2261ec22a637d647661784b963
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.3.0":
   version: 11.3.0
   resolution: "@emotion/babel-plugin@npm:11.3.0"
@@ -3963,6 +3970,7 @@ fsevents@~2.3.1:
     eslint-config-next: 11.1.2
     framer-motion: ^4
     next: 11.1.2
+    next-sitemap: ^1.6.168
     react: 17.0.2
     react-dom: 17.0.2
     schema-dts: ^1.0.0
@@ -4132,6 +4140,15 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"matcher@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "matcher@npm:4.0.0"
+  dependencies:
+    escape-string-regexp: ^4.0.0
+  checksum: d338aff31d8dfd3626873e43777f46b123579734d53bb8d18d64b08a822ba5e8d39f5fe2e23403258e6143aa0cbe20a15662720d825cd0d3af961d5a44230328
+  languageName: node
+  linkType: hard
+
 "md5.js@npm:^1.3.4":
   version: 1.3.5
   resolution: "md5.js@npm:1.3.5"
@@ -4202,7 +4219,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.5":
   version: 1.2.5
   resolution: "minimist@npm:1.2.5"
   checksum: 86706ce5b36c16bfc35c5fe3dbb01d5acdc9a22f2b6cc810b6680656a1d2c0e44a0159c9a3ba51fb072bb5c203e49e10b51dcd0eec39c481f4c42086719bae52
@@ -4331,6 +4348,21 @@ fsevents@~2.3.1:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
+  languageName: node
+  linkType: hard
+
+"next-sitemap@npm:^1.6.168":
+  version: 1.6.168
+  resolution: "next-sitemap@npm:1.6.168"
+  dependencies:
+    "@corex/deepmerge": ^2.6.34
+    matcher: ^4.0.0
+    minimist: ^1.2.5
+  peerDependencies:
+    next: "*"
+  bin:
+    next-sitemap: bin/next-sitemap
+  checksum: 2bdccf69a355915ed990c9235094cd395d90d1c80052ead8e3b0a16d0d6c4b7f10b7fa66efb3e82139de4bfefcf4b9d5388fa9e56a5db66bd8903accb4e67963
   languageName: node
   linkType: hard
 
