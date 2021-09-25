@@ -12,7 +12,7 @@ import {
 import { Person, WithContext } from "schema-dts";
 
 const Home: NextPage = () => {
-  const bioFontSize = "1.5em";
+  const bioFontSize = ["1.2em", "1.5em"];
   const bioStack = (
     <Stack direction="column">
       <Text fontSize={bioFontSize}>
@@ -85,7 +85,7 @@ const Home: NextPage = () => {
     ],
   };
   return (
-    <Box m={[50, 50, 100]} mt={[10, 20]} mr={[50, 50, 100]} maxW={1000}>
+    <Box m={[45, 50, 100]} mt={[10, 20]} mr={[45, 50, 100]} maxW={1000}>
       <Head>
         <title>Kevin Languasco</title>
         <meta name="description" content="Kevin Languasco's personal website" />
