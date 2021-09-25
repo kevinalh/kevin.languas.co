@@ -9,6 +9,7 @@ import {
   Stack,
   Avatar,
 } from "@chakra-ui/react";
+import { Person, WithContext } from "schema-dts";
 
 const Home: NextPage = () => {
   const bioFontSize = "1.5em";
@@ -60,7 +61,7 @@ const Home: NextPage = () => {
     </Stack>
   );
   const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
-  const ldSchema = {
+  const ldSchema: WithContext<Person> = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Kevin Languasco",
@@ -80,6 +81,7 @@ const Home: NextPage = () => {
     sameAs: [
       "https://www.linkedin.com/in/kevinalh/",
       "https://stackoverflow.com/users/2616577/kevin-languasco/",
+      "https://twitter.com/kevinalh",
     ],
   };
   return (
