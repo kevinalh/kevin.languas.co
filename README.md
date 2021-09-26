@@ -14,3 +14,7 @@ yarn dev
 ```
 
 Deployment is done via [Vercel](https://vercel.com/). Each commit to the `main` branch triggers a deploy process.
+
+### VSCode setup
+
+To work with Yarn, we need to install the [ZipFS extension](https://github.com/yarnpkg/berry/tree/master/packages/vscode-zipfs).
