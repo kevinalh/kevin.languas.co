@@ -1,4 +1,5 @@
 import { callGraphQL, GraphQLProjects } from "common/graphql";
+import { User } from "@octokit/graphql-schema";
 import { gql } from "@apollo/client";
 
 /**
@@ -29,6 +30,9 @@ export async function getStarredRepositories() {
       }
     }
   `;
-  const result = await callGraphQL(GraphQLProjects.GitHub, query);
-  return result.data;
+  const { viewer } = await callGraphQL<{ viewer: User }>(
+    GraphQLProjects.GitHub,
+    query
+  );
+  return viewer.starredRepositories.edges;
 }

@@ -1589,6 +1589,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/graphql-schema@npm:^10.72.0":
+  version: 10.72.0
+  resolution: "@octokit/graphql-schema@npm:10.72.0"
+  dependencies:
+    graphql: ^15.0.0
+    graphql-tag: ^2.10.3
+  checksum: b5b006a59208d10512b20b287c3030e1438ea3b2498019594c3c14873b0b1801160fd025385a5a667176165a48e223e917f6525d994b24ed1533f7466bab2f4a
+  languageName: node
+  linkType: hard
+
 "@popperjs/core@npm:2.4.4":
   version: 2.4.4
   resolution: "@popperjs/core@npm:2.4.4"
@@ -3841,7 +3851,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.12.3":
+"graphql-tag@npm:^2.10.3, graphql-tag@npm:^2.12.3":
   version: 2.12.5
   resolution: "graphql-tag@npm:2.12.5"
   dependencies:
@@ -3861,7 +3871,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.6.0":
+"graphql@npm:^15.0.0, graphql@npm:^15.6.0":
   version: 15.6.0
   resolution: "graphql@npm:15.6.0"
   checksum: 439959514665bc03ba86d6e55d8fb81d4c1e8ba3fc7f5114878b0ba794147e7ef57f368e40dadbb3f94d7c5f6685d15599bebb3a124cee2a1a8871a797d5ae81
@@ -4513,6 +4523,7 @@ fsevents@~2.3.1:
     "@chakra-ui/react-env": ^1.0.6
     "@emotion/react": ^11
     "@emotion/styled": ^11
+    "@octokit/graphql-schema": ^10.72.0
     "@types/node": ^16.9.2
     "@types/react": 17.0.21
     eslint: 7.32.0

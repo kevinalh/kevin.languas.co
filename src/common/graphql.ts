@@ -30,7 +30,7 @@ const loadGraphQLConfig: Promise<GraphQLConfig> = (async () => {
     throwOnEmpty: true,
   });
   if (gplConfig === undefined) {
-    throw Error("Couldn't load GraphQL configuration file");
+    throw new Error("Couldn't load GraphQL configuration file");
   }
   return gplConfig;
 })();
@@ -86,10 +86,16 @@ export enum GraphQLProjects {
  * @param project Project enum from which to load the configuration.
  * @param query A GraphQL query using the gql template literal tag.
  */
-export async function callGraphQL(
+export async function callGraphQL<TopSchemaType>(
   project: GraphQLProjects,
   query: TypedDocumentNode
-) {
+): Promise<TopSchemaType> {
   const client = await loadGraphQLClient(project);
-  return client.query({ query: query });
+  const result = await client.query({ query: query });
+  if (result.error) {
+    throw new Error(
+      `There was an issue with the Apollo query: ${result.error.message}`
+    );
+  }
+  return result.data as TopSchemaType;
 }
