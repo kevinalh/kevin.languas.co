@@ -19,8 +19,9 @@ export async function getStarredRepositories() {
             starredAt
             node {
               name
+              nameWithOwner
               createdAt
-              shortDescriptionHTML
+              description
               url
               stargazerCount
               openGraphImageUrl

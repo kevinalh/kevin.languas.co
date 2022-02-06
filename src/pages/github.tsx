@@ -1,7 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import { DEFAULT_REVALIDATION_TIME } from "common/constants";
 import { getStarredRepositories } from "modules/profile/services/github";
-import { VStack, Text, Image, Heading } from "@chakra-ui/react";
+import { VStack, Text, Image, Heading, Box, Link } from "@chakra-ui/react";
 
 export const getStaticProps = async () => {
   /**
@@ -29,15 +29,19 @@ export default function Github({
           throw new Error("Null repository in the returned list");
         }
         return (
-          <div key={repository.node.name}>
-            <Heading as="h4">{repository.node.name}</Heading>
-            <Text>{repository.node.shortDescriptionHTML}</Text>
+          <Box key={repository.node.nameWithOwner} w="50%">
+            <Heading as="h4">
+              <Link href={repository.node.url} isExternal>
+                {repository.node.nameWithOwner}
+              </Link>
+            </Heading>
+            <Text>{repository.node.description}</Text>
             <Image
               alt={repository.node.name}
               src={repository.node.openGraphImageUrl}
               boxSize="50px"
             ></Image>
-          </div>
+          </Box>
         );
       })}
     </VStack>
