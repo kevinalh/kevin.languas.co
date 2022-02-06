@@ -107,7 +107,7 @@ const Home: NextPage = () => {
             objectFit="cover"
             width={200}
             height={200}
-            alt="Kevin Languasco"
+            name="Kevin Languasco"
           />
           <Spacer m={10} />
           <Heading>Hi! I&apos;m Kevin.</Heading>
