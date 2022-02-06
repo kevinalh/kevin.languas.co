@@ -25,6 +25,10 @@ export async function getStarredRepositories() {
               url
               stargazerCount
               openGraphImageUrl
+              primaryLanguage {
+                name
+                color
+              }
             }
           }
         }
