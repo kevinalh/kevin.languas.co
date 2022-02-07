@@ -6,6 +6,8 @@
  * memoizee, but given Next.js already does ISR, it's probably not that big of a deal,
  * at least for now.
  */
+import { access } from "fs/promises";
+import { constants as fsConstants } from "fs";
 import {
   ApolloClient,
   InMemoryCache,
@@ -25,6 +27,13 @@ interface GraphQLConfigSchema {
  * Does an application-wide load of the GraphQL configuration file.
  */
 const loadGraphQLConfig: Promise<GraphQLConfig> = (async () => {
+  // The following explicit file check is required for the tracing to work
+  // https://github.com/vercel/next.js/issues/8251
+  try {
+    await access(".graphqlrc.yml", fsConstants.R_OK);
+  } catch {
+    throw new Error("The Graphql configuration file can't be read");
+  }
   const gplConfig = await loadConfig({
     throwOnMissing: true,
     throwOnEmpty: true,
