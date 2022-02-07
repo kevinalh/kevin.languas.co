@@ -2,5 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "github": {
     "silent": true
+  },
+  "functions": {
+    "*": {
+      "includeFiles": ".graphqlrc.yml"
+    }
   }
 }
