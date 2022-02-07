@@ -27,13 +27,6 @@ interface GraphQLConfigSchema {
  * Does an application-wide load of the GraphQL configuration file.
  */
 const loadGraphQLConfig: Promise<GraphQLConfig> = (async () => {
-  // The following explicit file check is required for the tracing to work
-  // https://github.com/vercel/next.js/issues/8251
-  try {
-    await access(".graphqlrc.yml", fsConstants.R_OK);
-  } catch {
-    throw new Error("The Graphql configuration file can't be read");
-  }
   const gplConfig = await loadConfig({
     throwOnMissing: true,
     throwOnEmpty: true,
