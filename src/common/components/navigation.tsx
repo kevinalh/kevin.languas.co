@@ -45,7 +45,7 @@ export default function Nav() {
         fontFamily={"heading"}
         color={useColorModeValue("gray.800", "white")}
       >
-        Kevin {useBreakpointValue({ base: "Languasco", md: "L" })}
+        Kevin L
       </Text>
     </Link>
   );
