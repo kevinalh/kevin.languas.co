@@ -33,9 +33,10 @@ export default function Github({
   if (repositories == null) {
     return <div>Couldn&apos;t load the repositories!</div>;
   }
+  const PRIORITY_IMAGES = 3;
   return (
     <VStack>
-      {repositories.map((repository) => {
+      {repositories.map((repository, index) => {
         if (repository == null) {
           throw new Error("Null repository in the returned list");
         }
@@ -67,6 +68,7 @@ export default function Github({
                   alt={repository.node.name}
                   src={repository.node.openGraphImageUrl}
                   layout="fill"
+                  priority={index <= PRIORITY_IMAGES}
                 ></Img>
               </Box>
             </HStack>
