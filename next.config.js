@@ -6,5 +6,6 @@ module.exports = {
       "avatars.githubusercontent.com",
       "repository-images.githubusercontent.com",
     ],
+    minimumCacheTTL: 120,
   },
 };
