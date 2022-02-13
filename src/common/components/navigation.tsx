@@ -91,7 +91,7 @@ export default function Nav() {
           direction={"row"}
           spacing={6}
         >
-          <Button onClick={toggleColorMode}>
+          <Button onClick={toggleColorMode} aria-label="Switch color mode">
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
         </Stack>

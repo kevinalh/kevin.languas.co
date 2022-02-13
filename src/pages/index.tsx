@@ -114,6 +114,7 @@ const Home: NextPage = () => {
             width={200}
             height={200}
             name="Kevin Languasco"
+            loading="lazy"
           />
           <Spacer m={10} />
           <Heading>Hi! I&apos;m Kevin.</Heading>
