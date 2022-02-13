@@ -8,5 +8,5 @@ import NextImage from "next/image";
 export const Img = chakra(NextImage, {
   baseStyle: { maxH: 10, maxW: 10 },
   shouldForwardProp: (prop) =>
-    ["layout", "src", "alt", "height", "width"].includes(prop),
+    ["layout", "src", "alt", "height", "width", "alt"].includes(prop),
 });

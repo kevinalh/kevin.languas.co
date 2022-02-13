@@ -107,6 +107,7 @@ const Home: NextPage = () => {
             width={200}
             height={200}
             borderRadius="full"
+            alt="Kevin Languasco"
           />
           <Spacer m={10} />
           <Heading>Hi! I&apos;m Kevin.</Heading>
