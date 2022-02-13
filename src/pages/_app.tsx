@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import theme from "common/theme";
 import { ReactElement, ReactNode } from "react";
 import Layout from "../common/components/layout";
+import { Chakra } from "../common/chakra";
 
 // Following boilerplate for layouts: https://nextjs.org/docs/basic-features/layouts
 type NextPageWithLayout = NextPage & {
@@ -19,9 +20,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // Use layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <ChakraProvider theme={theme}>
+    <Chakra cookies={pageProps.cookies}>
       <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-    </ChakraProvider>
+    </Chakra>
   );
 }
 
