@@ -1,15 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import {
-  Box,
-  Text,
-  Heading,
-  Spacer,
-  Link,
-  Stack,
-  Avatar,
-} from "@chakra-ui/react";
+import { Box, Text, Heading, Spacer, Link, Stack } from "@chakra-ui/react";
 import { Person, WithContext } from "schema-dts";
+
+import { Img } from "common/components/image";
 
 const Home: NextPage = () => {
   const bioFontSize = ["1.2em", "1.5em"];
@@ -108,13 +102,11 @@ const Home: NextPage = () => {
 
       <main>
         <Box textAlign={["center", "center", "left"]}>
-          <Avatar
+          <Img
             src={avatarPicture}
-            objectFit="cover"
             width={200}
             height={200}
-            name="Kevin Languasco"
-            loading="lazy"
+            borderRadius="full"
           />
           <Spacer m={10} />
           <Heading>Hi! I&apos;m Kevin.</Heading>
