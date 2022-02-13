@@ -10,7 +10,6 @@ import {
   Link,
   Circle,
   HStack,
-  StackDivider,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
