@@ -13,55 +13,26 @@ import {
   TypedDocumentNode,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { loadConfig, GraphQLConfig } from "graphql-config";
 
-interface GraphQLConfigSchema {
-  [index: number]: {
-    [key: string]: { headers: { [key: string]: string } };
-  };
+export enum GraphQLProjects {
+  GitHub = "github",
 }
 
-/**
- * Does an application-wide load of the GraphQL configuration file.
- */
-const loadGraphQLConfig: Promise<GraphQLConfig> = (async () => {
-  const gplConfig = await loadConfig({
-    throwOnMissing: true,
-    throwOnEmpty: true,
-  });
-  if (gplConfig === undefined) {
-    throw new Error("Couldn't load GraphQL configuration file");
-  }
-  return gplConfig;
-})();
-
-/**
- * Loads data from graphql-config, encapsulating some buggy behavior.
- * @param project Project for which to get the configuration.
- */
-async function loadGraphQLProjectConfig(project: GraphQLProjects): Promise<{
-  schema: string;
-  headers: { [index: string]: string };
-}> {
-  const config = await loadGraphQLConfig;
-  const projectConfig = config.getProject(project);
-  /**
-   * See the following issues for context of this code:
-   * - https://github.com/kamilkisiela/graphql-config/issues/765
-   * - https://github.com/Urigo/graphql-cli/issues/1219#issuecomment-642699959
-   */
-  const schemaList = projectConfig.schema as GraphQLConfigSchema;
-  const schema = Object.keys(schemaList[0])[0];
-  const headers = schemaList[0][schema].headers;
-  return { schema, headers };
-}
+const GraphQLConfig = Object.freeze({
+  [GraphQLProjects.GitHub]: {
+    schema: "https://api.github.com/graphql",
+    headers: {
+      Authorization: `bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
+    },
+  },
+});
 
 /**
  * Get a GraphQL client given a project name and a query.
  * @param project Project for which to get the client.
  */
 async function loadGraphQLClient(project: GraphQLProjects) {
-  const config = await loadGraphQLProjectConfig(project);
+  const config = GraphQLConfig[project];
   /**
    * This next part follows the Apollo docs boilerplate for authentication
    * https://www.apollographql.com/docs/react/networking/authentication/#header
@@ -75,10 +46,6 @@ async function loadGraphQLClient(project: GraphQLProjects) {
     cache: new InMemoryCache(),
   });
   return client;
-}
-
-export enum GraphQLProjects {
-  GitHub = "github",
 }
 
 /**
