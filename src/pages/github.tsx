@@ -1,10 +1,7 @@
 import { InferGetStaticPropsType } from "next";
-import { DEFAULT_REVALIDATION_TIME } from "common/constants";
-import { getStarredRepositories } from "modules/profile/services/github";
 import {
   VStack,
   Text,
-  Image,
   Heading,
   Box,
   Link,
@@ -12,6 +9,10 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
+
+import { DEFAULT_REVALIDATION_TIME } from "common/constants";
+import { Img } from "common/components/image";
+import { getStarredRepositories } from "modules/profile/services/github";
 
 export const getStaticProps = async () => {
   /**
@@ -53,12 +54,21 @@ export default function Github({
               </Link>
             </Heading>
             <HStack alignItems="stretch">
-              <Text marginRight="auto">{repository.node.description}</Text>
-              <Image
-                alt={repository.node.name}
-                src={repository.node.openGraphImageUrl}
-                boxSize="4em"
-              ></Image>
+              <Text marginRight="auto" maxWidth={["60%", "80%"]}>
+                {repository.node.description}
+              </Text>
+              <Box
+                marginRight="auto"
+                position="relative"
+                width="5em"
+                height="5em"
+              >
+                <Img
+                  alt={repository.node.name}
+                  src={repository.node.openGraphImageUrl}
+                  layout="fill"
+                ></Img>
+              </Box>
             </HStack>
             <HStack>
               <Circle
