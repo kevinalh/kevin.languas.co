@@ -85,7 +85,13 @@ const Home: NextPage = () => {
     ],
   };
   return (
-    <Box m={[45, 50, 100]} mt={[10, 20]} mr={[45, 50, 100]} maxW={1000}>
+    <Box
+      m={[45, 50, 100]}
+      mt={[10, 20, 45]}
+      ml={[5]}
+      mr={[5, 50, 100]}
+      maxW={1000}
+    >
       <Head>
         <title>Kevin Languasco</title>
         <meta name="description" content="Kevin Languasco's personal website" />
