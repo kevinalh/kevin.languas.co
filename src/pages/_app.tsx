@@ -1,8 +1,6 @@
 import "../styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import theme from "common/theme";
 import { ReactElement, ReactNode } from "react";
 import Layout from "../common/components/layout";
 import { Chakra } from "../common/chakra";
