@@ -17,6 +17,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { CloseIcon, MoonIcon, HamburgerIcon, SunIcon } from "@chakra-ui/icons";
+import NextLink from "next/link";
 import { NavItem } from "./interfaces";
 
 const MobileNav = dynamic(() => import("./mobile-nav"));
@@ -33,15 +34,17 @@ export default function Nav() {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const titleComponent = (
-    <Link href="/">
-      <Text
-        textAlign={useBreakpointValue({ base: "center", md: "left" })}
-        fontFamily={"heading"}
-        color={useColorModeValue("gray.800", "white")}
-      >
-        Kevin L
-      </Text>
-    </Link>
+    <NextLink href="/" passHref>
+      <Link>
+        <Text
+          textAlign={useBreakpointValue({ base: "center", md: "left" })}
+          fontFamily={"heading"}
+          color={useColorModeValue("gray.800", "white")}
+        >
+          Kevin L
+        </Text>
+      </Link>
+    </NextLink>
   );
   // The following variable is used for dynamically loading device-specific navigation
   const deviceType = useBreakpointValue({ base: "mobile", md: "desktop" });
