@@ -1,6 +1,5 @@
 ---
 import "@/styles/global.css";
-import Nav from "@/components/Nav.astro";
 
 interface Props {
   title: string;
@@ -30,7 +29,6 @@ const canonical = new URL(pathname, Astro.site).href;
     <slot name="head" />
   </head>
   <body>
-    <Nav />
     <main>
       <slot />
     </main>

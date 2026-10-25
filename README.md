@@ -23,12 +23,14 @@ pnpm cf:preview  # build and serve dist/ with Wrangler, as Cloudflare would
 pnpm check       # type-check .astro files
 ```
 
-Two sections are filled with data fetched at build time (see `.env.example`):
+The site is a single page. Two of its sections are filled with data fetched at
+build time (see `.env.example`), and each is left out when its key is missing:
 
-- `/github` shows the viewer's starred repositories from the GitHub GraphQL API,
-  using `GITHUB_ACCESS_TOKEN`. Without it the page renders a fallback message.
-- The homepage's "Recently listening" section shows the week's top albums from
-  Last.fm, using `LASTFM_API_KEY`. Without it the section is left out.
+- "Recently listening" shows the week's top albums from Last.fm, using
+  `LASTFM_API_KEY`.
+- "Recently starred" shows the latest starred repositories from the GitHub
+  GraphQL API, using `GITHUB_ACCESS_TOKEN`. The old `/github` page redirects to
+  the homepage (see `public/_redirects`).
 
 The site is hosted on [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)
 as static assets (see `wrangler.jsonc`), built and deployed by

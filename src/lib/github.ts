@@ -9,11 +9,11 @@ import type { StarredRepository } from "./types";
  * failing the whole build, unless strict fetching is enabled (see strict.ts).
  */
 const STARRED_REPOSITORIES_QUERY = `
-  query StarredRepositories {
+  query StarredRepositories($first: Int!) {
     viewer {
       starredRepositories(
         orderBy: { field: STARRED_AT, direction: DESC }
-        first: 30
+        first: $first
       ) {
         totalCount
         edges {
@@ -47,7 +47,9 @@ interface GitHubGraphQLResponse {
   errors?: Array<{ message: string }>;
 }
 
-export async function getStarredRepositories(): Promise<
+export async function getStarredRepositories(
+  first = 10,
+): Promise<
   StarredRepository[] | null
 > {
   const token = import.meta.env.GITHUB_ACCESS_TOKEN;
@@ -70,7 +72,10 @@ export async function getStarredRepositories(): Promise<
         "Content-Type": "application/json",
         "User-Agent": "kevin.languas.co",
       },
-      body: JSON.stringify({ query: STARRED_REPOSITORIES_QUERY }),
+      body: JSON.stringify({
+        query: STARRED_REPOSITORIES_QUERY,
+        variables: { first },
+      }),
     });
 
     if (!response.ok) {

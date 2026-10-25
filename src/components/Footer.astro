@@ -1,0 +1,27 @@
+---
+import { EMAIL, profileLinks } from "@/lib/links";
+---
+
+<footer class="mt-16 border-t border-gray-200 py-6 text-sm text-gray-500">
+  <ul class="flex flex-wrap gap-x-5 gap-y-2">
+    {
+      profileLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-gray-800 hover:underline"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a href={`mailto:${EMAIL}`} class="hover:text-gray-800 hover:underline"
+        >Email</a
+      >
+    </li>
+  </ul>
+</footer>

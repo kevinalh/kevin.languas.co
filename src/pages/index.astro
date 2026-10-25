@@ -2,15 +2,22 @@
 import { Image } from "astro:assets";
 import type { Person, WithContext } from "schema-dts";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Footer from "@/components/Footer.astro";
 import RecentlyListening from "@/components/RecentlyListening.astro";
-import { getTopAlbums, LASTFM_PROFILE_URL } from "@/lib/lastfm";
+import RecentlyStarred from "@/components/RecentlyStarred.astro";
+import { getStarredRepositories } from "@/lib/github";
+import { getTopAlbums } from "@/lib/lastfm";
+import { EMAIL, profileLinks } from "@/lib/links";
 
 const bioFontSize = "text-[1.2em] sm:text-[1.5em]";
 const linkClass = "hover:underline";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
 const description =
   "Kevin Languasco is a Distributed Systems Engineer at Cloudflare, working on the Analytical Database Platform.";
-const topAlbums = await getTopAlbums();
+const [topAlbums, repositories] = await Promise.all([
+  getTopAlbums(),
+  getStarredRepositories(),
+]);
 
 const ldSchema: WithContext<Person> = {
   "@context": "https://schema.org",
@@ -33,14 +40,11 @@ const ldSchema: WithContext<Person> = {
     },
   ],
   image: avatarPicture,
-  email: "mailto:kevin+websiteschema@languas.co",
+  email: `mailto:${EMAIL}`,
   givenName: "Kevin",
   sameAs: [
-    "https://github.com/kevinalh",
-    "https://www.linkedin.com/in/kevinalh/",
+    ...profileLinks.map((link) => link.href),
     "https://stackoverflow.com/users/2616577/kevin-languasco/",
-    "https://twitter.com/kevinalh",
-    LASTFM_PROFILE_URL,
   ],
 };
 ---
@@ -118,5 +122,11 @@ const ldSchema: WithContext<Person> = {
       </p>
     </div>
     {topAlbums && topAlbums.length > 0 && <RecentlyListening albums={topAlbums} />}
+    {
+      repositories && repositories.length > 0 && (
+        <RecentlyStarred repositories={repositories} />
+      )
+    }
+    <Footer />
   </div>
 </BaseLayout>
