@@ -26,7 +26,7 @@ const { albums } = Astro.props;
             {index + 1}
           </span>
           <a
-            href={album.url}
+            href={album.wikipediaUrl ?? album.url}
             target="_blank"
             rel="noopener noreferrer"
             class="min-w-0 flex-1 truncate hover:underline"
@@ -37,6 +37,23 @@ const { albums } = Astro.props;
           <span class="shrink-0 text-xs text-subtle tabular-nums">
             {formatPlays(album.playcount)}
           </span>
+          {
+            album.listenUrl ? (
+              <a
+                href={album.listenUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-4 shrink-0 text-center text-xs text-subtle hover:text-accent"
+                title="Listen on your streaming service"
+                aria-label={`Listen to ${album.name} on your streaming service`}
+              >
+                {/* U+FE0E keeps the triangle from rendering as an emoji. */}
+                ▶&#xFE0E;
+              </a>
+            ) : (
+              <span class="w-4 shrink-0" />
+            )
+          }
         </li>
       ))
     }

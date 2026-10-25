@@ -6,8 +6,14 @@ export const LASTFM_PROFILE_URL = `https://www.last.fm/user/${LASTFM_USER}`;
 export interface TopAlbum {
   name: string;
   artist: string;
+  /** The album's Last.fm page. */
   url: string;
   playcount: number;
+  /** MusicBrainz release ID, when Last.fm knows it. */
+  mbid?: string;
+  /** Added by addAlbumLinks when found. */
+  wikipediaUrl?: string;
+  listenUrl?: string;
 }
 
 interface LastfmTopAlbumsResponse {
@@ -16,6 +22,7 @@ interface LastfmTopAlbumsResponse {
       name: string;
       playcount: string;
       url: string;
+      mbid?: string;
       artist: { name: string };
     }>;
   };
@@ -66,6 +73,7 @@ export function getTopAlbums(): Promise<TopAlbum[] | null> {
           artist: album.artist.name,
           url: album.url,
           playcount: Number(album.playcount),
+          mbid: album.mbid || undefined,
         }));
     },
   );

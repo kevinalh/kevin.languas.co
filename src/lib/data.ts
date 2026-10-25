@@ -1,3 +1,4 @@
+import { addAlbumLinks } from "./albumLinks";
 import { getStarredRepositories } from "./github";
 import { getTopAlbums } from "./lastfm";
 
@@ -10,7 +11,7 @@ async function load() {
   ]);
   // Treat empty lists like missing data, so callers only check for null.
   return {
-    topAlbums: topAlbums?.length ? topAlbums : null,
+    topAlbums: topAlbums?.length ? await addAlbumLinks(topAlbums) : null,
     repositories: repositories?.length ? repositories : null,
   };
 }

@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
       topAlbums
         .map(
           (album, index) =>
-            `${index + 1}. [${escape(album.name)}](${href(album.url)}) · ${escape(album.artist)} (${formatPlays(album.playcount)})`,
+            `${index + 1}. [${escape(album.name)}](${href(album.wikipediaUrl ?? album.url)}) · ${escape(album.artist)} (${formatPlays(album.playcount)})${album.listenUrl ? ` · [listen](${href(album.listenUrl)})` : ""}`,
         )
         .join("\n"),
     );
