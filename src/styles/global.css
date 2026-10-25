@@ -6,22 +6,27 @@
  */
 :root {
   color-scheme: light dark;
-  --page: var(--color-white);
-  --fg: var(--color-gray-950);
-  --muted: var(--color-gray-600);
-  --subtle: var(--color-gray-500);
-  --faint: var(--color-gray-400);
-  --line: var(--color-gray-200);
+  /* Sage Ledger. Text shades are mixed from --fg toward --page and keep at
+     least 4.5:1 contrast. */
+  --page: #edf1ec;
+  --fg: #1e2621;
+  --muted: #3d453f;
+  --subtle: #525954;
+  --faint: #666d68;
+  --line: #d3dbd1;
+  --accent: #2e6f40;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --page: var(--color-gray-950);
-    --fg: var(--color-gray-100);
-    --muted: var(--color-gray-300);
-    --subtle: var(--color-gray-400);
-    --faint: var(--color-gray-500);
-    --line: var(--color-gray-800);
+    /* Nordic Dusk (Nord). */
+    --page: #2e3440;
+    --fg: #eceff4;
+    --muted: #d8dee9;
+    --subtle: #bcc0c7;
+    --faint: #a0a4ac;
+    --line: #434c5e;
+    --accent: #a3be8c;
   }
 }
 
@@ -31,6 +36,7 @@
   --color-subtle: var(--subtle);
   --color-faint: var(--faint);
   --color-line: var(--line);
+  --color-accent: var(--accent);
 }
 
 body {
