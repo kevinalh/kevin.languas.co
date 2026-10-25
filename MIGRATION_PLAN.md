@@ -457,3 +457,25 @@ This section records how the implementation differed from the plan above.
   produced a GitHub 401 instead of the "not set" fallback).
 - `pnpm preview` routing → `/` 200, `/github` 200, `/github/` 200, `/nope` 404.
 - `dist/` contains **no client JS** and no Chakra/Emotion/framer-motion/Next.js references.
+
+---
+
+## 9. Cloudflare hosting (follow-up)
+
+Resolves decision 4: the host is **Cloudflare Workers static assets**, deployed with
+**Wrangler** (not the `cf` CLI, which is still in open beta; revisit with `cf migrate`
+once it is stable). No Astro adapter; the build stays fully static.
+
+- `wrangler.jsonc`: assets from `./dist`, `drop-trailing-slash`, `404-page`, custom
+  domain `kevin.languas.co` (the zone and registrar are on Cloudflare).
+- Astro now uses `build.format: "file"` + `trailingSlash: "never"` so `/github` is served
+  without a trailing slash, matching the old Next.js URLs; canonical tags and the sitemap
+  follow.
+- `public/_headers` marks `/_astro/*` as immutable.
+- `.github/workflows/deploy.yml`: check + build + `wrangler deploy` on push to `main`,
+  every 6 hours (replaces ISR), and on manual dispatch; PRs get `wrangler versions upload`
+  previews.
+- `getStarredRepositories()` throws when `CI=true`, so a failed scheduled rebuild never
+  replaces a good `/github` with the fallback.
+- Known caveat: GitHub disables scheduled workflows in public repos after 60 days without
+  repository activity.

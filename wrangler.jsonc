@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kevin-languas-co",
+  "compatibility_date": "2026-10-25",
+  // Static site only: no Worker script, Cloudflare serves the Astro build.
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "kevin.languas.co",
+      "custom_domain": true
+    }
+  ],
+  "workers_dev": true,
+  "preview_urls": true
+}

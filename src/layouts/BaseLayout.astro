@@ -9,7 +9,12 @@ interface Props {
 }
 
 const { title, description, keywords } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// With `build.format: "file"` the pathname ends in `.html`; strip it so the
+// canonical URL matches the extensionless URL Cloudflare serves.
+const pathname = Astro.url.pathname
+  .replace(/(^|\/)index\.html$/, "$1")
+  .replace(/\.html$/, "");
+const canonical = new URL(pathname, Astro.site).href;
 ---
 
 <!doctype html>
