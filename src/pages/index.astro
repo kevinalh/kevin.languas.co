@@ -13,7 +13,7 @@ const bioFontSize = "text-[1.2em] sm:text-[1.5em]";
 const linkClass = "text-accent hover:underline";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
 const description =
-  "Kevin Languasco is a Distributed Systems Engineer at Cloudflare in London, working on the ClickHouse-based Analytical Database Platform.";
+  "Distributed Systems Engineer at Cloudflare in London, working on the ClickHouse Platform.";
 const [topAlbums, repositories] = await Promise.all([
   getTopAlbums(),
   getStarredRepositories(),
@@ -73,7 +73,13 @@ const ldSchema: WithContext<Person> = {
   description={description}
   keywords="distributed systems, ClickHouse, analytical databases, data engineering, Kubernetes, Rust, Go, Cloudflare"
   ogType="profile"
-  image={{ src: avatarPicture, alt: "Kevin Languasco" }}
+  image={{
+    // Rendered by scripts/og-image.mjs.
+    src: "/og.png",
+    alt: "Kevin Languasco, Distributed Systems Engineer at Cloudflare in London",
+    width: 1200,
+    height: 630,
+  }}
 >
   <script
     is:inline
@@ -104,7 +110,7 @@ const ldSchema: WithContext<Person> = {
         I&apos;m a Peruvian engineer currently working at <a
           class={linkClass}
           href="https://www.cloudflare.com">Cloudflare</a
-        > in London, on the Analytical Database Platform.
+        > in London, on the ClickHouse Platform.
       </p>
       <p class={bioFontSize}>
         I previously worked at <a

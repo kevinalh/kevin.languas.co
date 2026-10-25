@@ -32,6 +32,9 @@ build time (see `.env.example`), and each is left out when its key is missing:
   GraphQL API, using `GITHUB_ACCESS_TOKEN`. The old `/github` page redirects to
   the homepage (see `public/_redirects`).
 
+The link preview image, `public/og.png`, is static. Regenerate it with
+`node scripts/og-image.mjs` when the name, role, or avatar changes.
+
 The site is hosted on [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)
 as static assets (see `wrangler.jsonc`), built and deployed by
 [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) on every

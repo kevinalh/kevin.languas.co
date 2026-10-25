@@ -7,8 +7,8 @@ interface Props {
   keywords?: string;
   /** Open Graph type of the page, e.g. "profile" for the homepage. */
   ogType?: string;
-  /** Absolute URL of the image shown in link previews. */
-  image?: { src: string; alt: string };
+  /** Large link preview image; `src` is relative to the site root. */
+  image?: { src: string; alt: string; width: number; height: number };
 }
 
 const { title, description, keywords, ogType = "website", image } = Astro.props;
@@ -18,6 +18,7 @@ const pathname = Astro.url.pathname
   .replace(/(^|\/)index\.html$/, "$1")
   .replace(/\.html$/, "");
 const canonical = new URL(pathname, Astro.site).href;
+const imageUrl = image && new URL(image.src, Astro.site).href;
 ---
 
 <!doctype html>
@@ -39,9 +40,20 @@ const canonical = new URL(pathname, Astro.site).href;
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
-    {image && <meta property="og:image" content={image.src} />}
-    {image && <meta property="og:image:alt" content={image.alt} />}
-    <meta name="twitter:card" content="summary" />
+    {
+      image && (
+        <>
+          <meta property="og:image" content={imageUrl} />
+          <meta property="og:image:width" content={String(image.width)} />
+          <meta property="og:image:height" content={String(image.height)} />
+          <meta property="og:image:alt" content={image.alt} />
+        </>
+      )
+    }
+    <meta
+      name="twitter:card"
+      content={image ? "summary_large_image" : "summary"}
+    />
     <meta name="twitter:creator" content="@kevinalh" />
     <slot name="head" />
   </head>
