@@ -2,11 +2,20 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kevin-languas-co",
   "compatibility_date": "2026-10-25",
-  // Static site only: no Worker script, Cloudflare serves the Astro build.
+  // Handles the cron trigger; pages are served from assets.
+  "main": "./worker/index.ts",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page"
+  },
+  "triggers": {
+    // Rebuild every 6 hours to refresh the starred repositories on /github.
+    "crons": ["0 */6 * * *"]
+  },
+  "secrets": {
+    "required": ["DEPLOY_HOOK_URL"]
   },
   "routes": [
     {

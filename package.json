@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "cf:preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
-    "check": "astro check",
+    "check": "wrangler types && astro check && tsc -p worker",
     "astro": "astro"
   },
   "dependencies": {

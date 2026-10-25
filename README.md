@@ -28,15 +28,23 @@ GraphQL API at build time. Set `GITHUB_ACCESS_TOKEN` (see `.env.example`) to
 enable it; without a token the page renders a fallback message instead.
 
 The site is hosted on [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)
-as static assets (see `wrangler.jsonc`). The `Deploy` GitHub Actions workflow
-deploys on every push to `main` and every 6 hours, so `/github` stays fresh, and
-uploads a preview version for each pull request. In CI, a failed GitHub fetch
-fails the build, so the last good deploy stays live.
+as static assets (see `wrangler.jsonc`), built and deployed by
+[Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) on every
+push to `main`, with preview builds for other branches. No Cloudflare API token
+is stored anywhere outside Cloudflare.
 
-The workflow needs these repository secrets:
+To keep `/github` fresh, the small Worker in `worker/index.ts` runs on a cron
+every 6 hours and calls a Workers Builds
+[Deploy Hook](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/),
+which rebuilds the site. Builds set `GITHUB_FETCH_STRICT=true`, so a failed
+GitHub fetch fails the build and the last good deploy stays live.
 
-| Secret | Purpose |
-| --- | --- |
-| `CLOUDFLARE_API_TOKEN` | API token with the "Edit Cloudflare Workers" template permissions |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID |
-| `GH_STARS_TOKEN` | GitHub token passed to the build as `GITHUB_ACCESS_TOKEN` |
+Configuration that lives in the Cloudflare dashboard:
+
+| Where | Setting | Value |
+| --- | --- | --- |
+| Settings → Build | Build command | `pnpm check && pnpm build` |
+| Settings → Build | Deploy command | `pnpm exec wrangler deploy` |
+| Settings → Build → Variables and secrets | `GITHUB_ACCESS_TOKEN` (secret) | Fine-grained GitHub PAT: public repositories read-only, "Starring" read |
+| Settings → Build → Variables and secrets | `GITHUB_FETCH_STRICT` | `true` |
+| Settings → Variables & Secrets (runtime) | `DEPLOY_HOOK_URL` (secret) | The Deploy Hook URL for `main` |

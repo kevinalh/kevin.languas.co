@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly GITHUB_ACCESS_TOKEN?: string;
-  readonly CI?: string;
+  readonly GITHUB_FETCH_STRICT?: string;
 }
 
 interface ImportMeta {

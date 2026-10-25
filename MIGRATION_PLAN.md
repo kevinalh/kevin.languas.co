@@ -472,10 +472,16 @@ once it is stable). No Astro adapter; the build stays fully static.
   without a trailing slash, matching the old Next.js URLs; canonical tags and the sitemap
   follow.
 - `public/_headers` marks `/_astro/*` as immutable.
-- `.github/workflows/deploy.yml`: check + build + `wrangler deploy` on push to `main`,
-  every 6 hours (replaces ISR), and on manual dispatch; PRs get `wrangler versions upload`
-  previews.
-- `getStarredRepositories()` throws when `CI=true`, so a failed scheduled rebuild never
-  replaces a good `/github` with the fallback.
-- Known caveat: GitHub disables scheduled workflows in public repos after 60 days without
-  repository activity.
+- **Builds run on Workers Builds**, not GitHub Actions, so no Cloudflare API token exists
+  outside Cloudflare (Cloudflare has no native GitHub OIDC trust yet, and community OIDC
+  brokers still need a token-minting credential themselves).
+- **Freshness:** `worker/index.ts` has a Cron Trigger (`0 */6 * * *`) that POSTs to a
+  Workers Builds Deploy Hook (URL stored as the `DEPLOY_HOOK_URL` Worker secret). This
+  replaces ISR and avoids GitHub disabling scheduled workflows in idle public repos. Its
+  `fetch` handler only forwards unmatched requests to `env.ASSETS` for the 404 page.
+- `getStarredRepositories()` throws when `GITHUB_FETCH_STRICT=true` (a build variable), so a
+  failed scheduled rebuild never replaces a good `/github` with the fallback.
+- The GitHub token is a fine-grained PAT (public repos read-only, "Starring" read), stored
+  as a Workers Builds secret.
+- `.node-version` pins Node 26 for Workers Builds; `pnpm` comes from `packageManager`.
+  Keep it in sync with `mise.toml`.

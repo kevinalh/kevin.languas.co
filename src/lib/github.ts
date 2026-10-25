@@ -5,8 +5,9 @@ import type { StarredRepository } from "./types";
  *
  * This is called at build time. If no token is configured or the request
  * fails, `null` is returned so the page can render a fallback instead of
- * failing the whole build. In CI the error is thrown instead, so a broken
- * scheduled rebuild keeps the last good deploy live.
+ * failing the whole build. With `GITHUB_FETCH_STRICT=true` (set in Workers
+ * Builds) the error is thrown instead, so a broken scheduled rebuild keeps the
+ * last good deploy live.
  */
 const STARRED_REPOSITORIES_QUERY = `
   query StarredRepositories {
@@ -52,11 +53,11 @@ export async function getStarredRepositories(): Promise<
   StarredRepository[] | null
 > {
   const token = import.meta.env.GITHUB_ACCESS_TOKEN;
-  const strict = import.meta.env.CI === "true";
+  const strict = import.meta.env.GITHUB_FETCH_STRICT === "true";
 
   if (!token) {
     if (strict) {
-      throw new Error("GITHUB_ACCESS_TOKEN must be set in CI.");
+      throw new Error("GITHUB_ACCESS_TOKEN must be set for strict builds.");
     }
     console.warn(
       "GITHUB_ACCESS_TOKEN is not set; skipping the GitHub repository fetch.",
