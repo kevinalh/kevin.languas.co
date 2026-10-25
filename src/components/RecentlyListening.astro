@@ -1,5 +1,5 @@
 ---
-import { LASTFM_PROFILE_URL, type TopAlbum } from "@/lib/lastfm";
+import { formatPlays, LASTFM_PROFILE_URL, type TopAlbum } from "@/lib/lastfm";
 
 interface Props {
   albums: TopAlbum[];
@@ -35,7 +35,7 @@ const { albums } = Astro.props;
             <span class="text-muted"> · {album.artist}</span>
           </a>
           <span class="shrink-0 text-xs text-subtle tabular-nums">
-            {album.playcount} {album.playcount === 1 ? "play" : "plays"}
+            {formatPlays(album.playcount)}
           </span>
         </li>
       ))

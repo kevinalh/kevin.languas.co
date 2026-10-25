@@ -8,12 +8,17 @@ async function load() {
     getTopAlbums(),
     getStarredRepositories(),
   ]);
-  return { topAlbums, repositories };
+  // Treat empty lists like missing data, so callers only check for null.
+  return {
+    topAlbums: topAlbums?.length ? topAlbums : null,
+    repositories: repositories?.length ? repositories : null,
+  };
 }
 
 /**
  * The Last.fm and GitHub data shown on the homepage. Fetched once per build
- * and shared by the HTML page and its Markdown version.
+ * and shared by the HTML page and its Markdown version. A section without
+ * data is `null` and is left out.
  */
 export function getPageData() {
   return (pageData ??= load());

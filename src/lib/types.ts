@@ -4,9 +4,7 @@ export interface RepositoryLanguage {
 }
 
 export interface RepositoryNode {
-  name: string;
   nameWithOwner: string;
-  createdAt: string;
   description: string | null;
   url: string;
   stargazerCount: number;
@@ -14,6 +12,5 @@ export interface RepositoryNode {
 }
 
 export interface StarredRepository {
-  starredAt: string;
   node: RepositoryNode;
 }

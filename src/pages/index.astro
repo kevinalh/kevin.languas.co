@@ -8,7 +8,7 @@ import RecentlyStarred from "@/components/RecentlyStarred.astro";
 import { Content as Bio } from "@/content/bio.md";
 import { getPageData } from "@/lib/data";
 import { EMAIL, profileLinks } from "@/lib/links";
-import { DESCRIPTION as description, NAME } from "@/lib/site";
+import { DESCRIPTION as description, NAME, ROLE } from "@/lib/site";
 
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
 const { topAlbums, repositories } = await getPageData();
@@ -17,9 +17,9 @@ const ldSchema: WithContext<Person> = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: NAME,
-  url: "https://kevin.languas.co/",
+  url: Astro.site?.href,
   description,
-  jobTitle: "Distributed Systems Engineer",
+  jobTitle: ROLE,
   address: {
     "@type": "PostalAddress",
     addressLocality: "London",
@@ -63,14 +63,14 @@ const ldSchema: WithContext<Person> = {
 ---
 
 <BaseLayout
-  title={`${NAME} · Distributed Systems Engineer`}
+  title={`${NAME} · ${ROLE}`}
   description={description}
   keywords="distributed systems, ClickHouse, analytical databases, data engineering, Kubernetes, Rust, Go, Cloudflare"
   ogType="profile"
   image={{
     // Rendered by scripts/og-image.mjs.
     src: "/og.png",
-    alt: "Kevin Languasco, Distributed Systems Engineer at Cloudflare in London",
+    alt: `${NAME}, ${ROLE} at Cloudflare in London`,
     width: 1200,
     height: 630,
   }}
@@ -105,12 +105,8 @@ const ldSchema: WithContext<Person> = {
     >
       <Bio />
     </div>
-    {topAlbums && topAlbums.length > 0 && <RecentlyListening albums={topAlbums} />}
-    {
-      repositories && repositories.length > 0 && (
-        <RecentlyStarred repositories={repositories} />
-      )
-    }
+    {topAlbums && <RecentlyListening albums={topAlbums} />}
+    {repositories && <RecentlyStarred repositories={repositories} />}
     <Footer />
   </div>
 </BaseLayout>

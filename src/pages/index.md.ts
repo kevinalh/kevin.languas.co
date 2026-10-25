@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { rawContent as bio } from "@/content/bio.md";
 import { getPageData } from "@/lib/data";
-import { LASTFM_PROFILE_URL } from "@/lib/lastfm";
+import { formatPlays, LASTFM_PROFILE_URL } from "@/lib/lastfm";
 import { EMAIL, GITHUB_STARS_URL, profileLinks } from "@/lib/links";
 import { builtAtLabel, DESCRIPTION, NAME } from "@/lib/site";
 
@@ -20,20 +20,20 @@ export const GET: APIRoute = async () => {
   const { topAlbums, repositories } = await getPageData();
   const sections = [`# ${NAME}`, DESCRIPTION, bio().trim()];
 
-  if (topAlbums && topAlbums.length > 0) {
+  if (topAlbums) {
     sections.push(
       "## Recently listening",
       `My most played albums this week, via [Last.fm](${LASTFM_PROFILE_URL}).`,
       topAlbums
         .map(
           (album, index) =>
-            `${index + 1}. [${escape(album.name)}](${href(album.url)}) · ${escape(album.artist)} (${album.playcount} ${album.playcount === 1 ? "play" : "plays"})`,
+            `${index + 1}. [${escape(album.name)}](${href(album.url)}) · ${escape(album.artist)} (${formatPlays(album.playcount)})`,
         )
         .join("\n"),
     );
   }
 
-  if (repositories && repositories.length > 0) {
+  if (repositories) {
     sections.push(
       "## Recently starred",
       `Repositories I've starred on GitHub lately. [See all](${GITHUB_STARS_URL}).`,

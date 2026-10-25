@@ -1,6 +1,6 @@
 export const NAME = "Kevin Languasco";
-export const DESCRIPTION =
-  "Distributed Systems Engineer at Cloudflare in London, working on the ClickHouse Platform.";
+export const ROLE = "Distributed Systems Engineer";
+export const DESCRIPTION = `${ROLE} at Cloudflare in London, working on the ClickHouse Platform.`;
 
 // The site is rebuilt whenever its data is refreshed, so the build time is
 // when the Last.fm and GitHub sections were last fetched.

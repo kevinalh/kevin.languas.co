@@ -11,7 +11,7 @@
     "not_found_handling": "404-page"
   },
   "triggers": {
-    // Rebuild every 6 hours to refresh the starred repositories on /github.
+    // Rebuild every 6 hours to refresh the Last.fm and GitHub sections.
     "crons": ["0 */6 * * *"]
   },
   "secrets": {
