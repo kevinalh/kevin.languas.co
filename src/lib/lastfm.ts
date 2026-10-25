@@ -3,6 +3,12 @@ import { buildTimeFetch, USER_AGENT } from "./strict";
 const LASTFM_USER = "kevinalh";
 export const LASTFM_PROFILE_URL = `https://www.last.fm/user/${LASTFM_USER}`;
 
+export interface AlbumListenLink {
+  url: string;
+  /** Where the link plays the album, e.g. "Spotify". */
+  service: string;
+}
+
 export interface TopAlbum {
   name: string;
   artist: string;
@@ -13,7 +19,7 @@ export interface TopAlbum {
   mbid?: string;
   /** Added by addAlbumLinks when found. */
   wikipediaUrl?: string;
-  listenUrl?: string;
+  listen?: AlbumListenLink;
 }
 
 interface LastfmTopAlbumsResponse {

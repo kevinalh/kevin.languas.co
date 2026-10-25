@@ -1,44 +1,50 @@
-import type { TopAlbum } from "./lastfm";
+import type { AlbumListenLink, TopAlbum } from "./lastfm";
 import { USER_AGENT } from "./strict";
 
 /**
  * Finds better destinations for each album than its Last.fm page: the English
- * Wikipedia article, through MusicBrainz and Wikidata, and a song.link page
- * that opens the album on any streaming service, through the iTunes Search
- * API. The lookups are best-effort: an album without a match keeps its Last.fm
+ * Wikipedia article and the Spotify album, both through MusicBrainz (and
+ * Wikidata), or else a song.link page found through the iTunes Search API.
+ * The lookups are best-effort: an album without a match keeps its Last.fm
  * link, and failures never fail the build.
  */
 export async function addAlbumLinks(albums: TopAlbum[]): Promise<TopAlbum[]> {
   // The two lookups use different services, so they run side by side. Each
   // looks up one album at a time to stay within its service's rate limits.
-  const [wikipediaUrls, listenUrls] = await Promise.all([
-    findEach(albums, findWikipediaUrl),
-    findEach(albums, findListenUrl),
+  const [musicBrainzLinks, songLinkUrls] = await Promise.all([
+    findEach(albums, findMusicBrainzLinks),
+    findEach(albums, findSongLinkUrl),
   ]);
-  return albums.map((album, index) => ({
-    ...album,
-    wikipediaUrl: wikipediaUrls[index],
-    listenUrl: listenUrls[index],
-  }));
+  return albums.map((album, index) => {
+    const { wikipediaUrl, spotifyUrl } = musicBrainzLinks[index] ?? {};
+    const songLinkUrl = songLinkUrls[index];
+    let listen: AlbumListenLink | undefined;
+    if (spotifyUrl) {
+      listen = { url: spotifyUrl, service: "Spotify" };
+    } else if (songLinkUrl) {
+      listen = { url: songLinkUrl, service: "your streaming service" };
+    }
+    return { ...album, wikipediaUrl, listen };
+  });
 }
 
-async function findEach(
+async function findEach<T>(
   albums: TopAlbum[],
-  find: (album: TopAlbum) => Promise<string | undefined>,
-): Promise<Array<string | undefined>> {
-  const urls = [];
+  find: (album: TopAlbum) => Promise<T | undefined>,
+): Promise<Array<T | undefined>> {
+  const results = [];
   for (const album of albums) {
     try {
-      urls.push(await find(album));
+      results.push(await find(album));
     } catch (error) {
       console.warn(
         `Album link lookup failed for "${album.name}":`,
         error instanceof Error ? error.message : error,
       );
-      urls.push(undefined);
+      results.push(undefined);
     }
   }
-  return urls;
+  return results;
 }
 
 /** Normalizes a title for comparison, ignoring case and edition suffixes. */
@@ -52,12 +58,25 @@ function normalize(title: string): string {
     .trim();
 }
 
+async function getJson<T>(url: URL): Promise<T> {
+  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+  if (!response.ok) {
+    throw new Error(`${url.hostname} returned ${response.status}`);
+  }
+  return (await response.json()) as T;
+}
+
 // MusicBrainz asks for a contact URL in the user agent and at most one request
 // per second.
 const MUSICBRAINZ_USER_AGENT = `${USER_AGENT} ( https://kevin.languas.co )`;
 const MUSICBRAINZ_INTERVAL_MS = 1100;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+interface UrlRelation {
+  type: string;
+  url?: { resource: string };
+}
 
 /** Calls the MusicBrainz API, retrying when it's busy. Returns null on 404. */
 async function musicBrainz<T>(
@@ -85,17 +104,11 @@ async function musicBrainz<T>(
   }
 }
 
-async function getJson<T>(url: URL): Promise<T> {
-  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
-  if (!response.ok) {
-    throw new Error(`${url.hostname} returned ${response.status}`);
-  }
-  return (await response.json()) as T;
-}
-
-async function findWikipediaUrl(album: TopAlbum): Promise<string | undefined> {
-  let title: string | undefined;
+async function findMusicBrainzLinks(
+  album: TopAlbum,
+): Promise<{ wikipediaUrl?: string; spotifyUrl?: string }> {
   let releaseGroupId: string | undefined;
+  let wikipediaTitle: string | undefined;
 
   if (album.mbid) {
     const release = await musicBrainz<{ "release-group"?: { id: string } }>(
@@ -104,23 +117,28 @@ async function findWikipediaUrl(album: TopAlbum): Promise<string | undefined> {
     );
     releaseGroupId = release?.["release-group"]?.id;
     if (releaseGroupId) {
-      title = await findWikipediaTitle(releaseGroupId);
+      wikipediaTitle = await findWikipediaTitle(releaseGroupId);
     }
   }
 
   // Last.fm's ID can point at an edition without a Wikidata link, or be
   // missing, so fall back to an exact search.
-  if (!title) {
+  if (!wikipediaTitle) {
     const searchedId = await searchReleaseGroup(album);
     if (searchedId && searchedId !== releaseGroupId) {
-      title = await findWikipediaTitle(searchedId);
+      wikipediaTitle = await findWikipediaTitle(searchedId);
+      releaseGroupId ??= searchedId;
     }
   }
 
-  return (
-    title &&
-    `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replaceAll(" ", "_"))}`
-  );
+  return {
+    wikipediaUrl:
+      wikipediaTitle &&
+      `https://en.wikipedia.org/wiki/${encodeURIComponent(wikipediaTitle.replaceAll(" ", "_"))}`,
+    spotifyUrl: releaseGroupId
+      ? await findSpotifyUrl(releaseGroupId, album.mbid)
+      : undefined,
+  };
 }
 
 async function searchReleaseGroup(album: TopAlbum): Promise<string | undefined> {
@@ -140,9 +158,10 @@ async function searchReleaseGroup(album: TopAlbum): Promise<string | undefined> 
 async function findWikipediaTitle(
   releaseGroupId: string,
 ): Promise<string | undefined> {
-  const releaseGroup = await musicBrainz<{
-    relations?: Array<{ type: string; url?: { resource: string } }>;
-  }>(`release-group/${releaseGroupId}`, { inc: "url-rels" });
+  const releaseGroup = await musicBrainz<{ relations?: UrlRelation[] }>(
+    `release-group/${releaseGroupId}`,
+    { inc: "url-rels" },
+  );
   const wikidataUrl = releaseGroup?.relations?.find(
     (relation) => relation.type === "wikidata",
   )?.url?.resource;
@@ -155,6 +174,30 @@ async function findWikipediaTitle(
     entities: Record<string, { sitelinks?: { enwiki?: { title: string } } }>;
   }>(new URL(`https://www.wikidata.org/wiki/Special:EntityData/${entityId}.json`));
   return entity.entities[entityId]?.sitelinks?.enwiki?.title;
+}
+
+/**
+ * Finds a Spotify album link among the release group's releases, preferring
+ * the release Last.fm reported.
+ */
+async function findSpotifyUrl(
+  releaseGroupId: string,
+  preferredReleaseId: string | undefined,
+): Promise<string | undefined> {
+  const result = await musicBrainz<{
+    releases: Array<{ id: string; relations?: UrlRelation[] }>;
+  }>("release", { "release-group": releaseGroupId, inc: "url-rels", limit: "100" });
+  const releases = result?.releases ?? [];
+  const spotifyUrlOf = (release: (typeof releases)[number]) =>
+    release.relations
+      ?.map((relation) => relation.url?.resource)
+      .find((url) => url?.startsWith("https://open.spotify.com/album/"));
+
+  const preferred = releases.find((release) => release.id === preferredReleaseId);
+  return (
+    (preferred && spotifyUrlOf(preferred)) ??
+    releases.map(spotifyUrlOf).find(Boolean)
+  );
 }
 
 interface ITunesResult {
@@ -173,9 +216,9 @@ function iTunes(endpoint: "search" | "lookup", params: Record<string, string>): 
 
 /**
  * Finds the album in the artist's iTunes catalog, which matches far more
- * reliably than a free-text album search.
+ * reliably than a free-text album search, and links its song.link page.
  */
-async function findListenUrl(album: TopAlbum): Promise<string | undefined> {
+async function findSongLinkUrl(album: TopAlbum): Promise<string | undefined> {
   const artists = await getJson<{ results: ITunesResult[] }>(
     iTunes("search", { term: album.artist, entity: "musicArtist", limit: "5" }),
   );
