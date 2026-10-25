@@ -1,0 +1,33 @@
+---
+import { EMAIL, profileLinks } from "@/lib/links";
+import { builtAt, builtAtLabel } from "@/lib/site";
+---
+
+<footer
+  class="mt-16 flex flex-col gap-3 border-t border-line py-6 text-sm text-subtle sm:flex-row sm:items-baseline"
+>
+  <ul class="flex flex-wrap gap-x-5 gap-y-2">
+    {
+      profileLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-fg hover:underline"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a href={`mailto:${EMAIL}`} class="hover:text-fg hover:underline"
+        >Email</a
+      >
+    </li>
+  </ul>
+  <p class="text-xs sm:ml-auto">
+    Last updated <time datetime={builtAt}>{builtAtLabel}</time>
+  </p>
+</footer>

@@ -1,32 +1,22 @@
+import { buildTimeFetch, USER_AGENT } from "./strict";
 import type { StarredRepository } from "./types";
 
-/**
- * Fetches the viewer's starred repositories through the GitHub GraphQL API.
- *
- * This is called at build time. If no token is configured or the request
- * fails, `null` is returned so the page can render a fallback instead of
- * failing the whole build. With `GITHUB_FETCH_STRICT=true` (set in Workers
- * Builds) the error is thrown instead, so a broken scheduled rebuild keeps the
- * last good deploy live.
- */
+/** How many starred repositories the homepage shows. */
+const STARRED_REPOSITORIES_COUNT = 10;
+
 const STARRED_REPOSITORIES_QUERY = `
-  query StarredRepositories {
+  query StarredRepositories($first: Int!) {
     viewer {
       starredRepositories(
         orderBy: { field: STARRED_AT, direction: DESC }
-        first: 30
+        first: $first
       ) {
-        totalCount
         edges {
-          starredAt
           node {
-            name
             nameWithOwner
-            createdAt
             description
             url
             stargazerCount
-            openGraphImageUrl
             primaryLanguage {
               name
               color
@@ -49,49 +39,37 @@ interface GitHubGraphQLResponse {
   errors?: Array<{ message: string }>;
 }
 
-export async function getStarredRepositories(): Promise<
-  StarredRepository[] | null
-> {
-  const token = import.meta.env.GITHUB_ACCESS_TOKEN;
-  const strict = import.meta.env.GITHUB_FETCH_STRICT === "true";
+/** Fetches the viewer's most recently starred repositories from GitHub. */
+export function getStarredRepositories(): Promise<StarredRepository[] | null> {
+  return buildTimeFetch(
+    "GitHub",
+    "GITHUB_ACCESS_TOKEN",
+    import.meta.env.GITHUB_ACCESS_TOKEN,
+    async (token) => {
+      const response = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: {
+          Authorization: `bearer ${token}`,
+          "Content-Type": "application/json",
+          "User-Agent": USER_AGENT,
+        },
+        body: JSON.stringify({
+          query: STARRED_REPOSITORIES_QUERY,
+          variables: { first: STARRED_REPOSITORIES_COUNT },
+        }),
+      });
 
-  if (!token) {
-    if (strict) {
-      throw new Error("GITHUB_ACCESS_TOKEN must be set for strict builds.");
-    }
-    console.warn(
-      "GITHUB_ACCESS_TOKEN is not set; skipping the GitHub repository fetch.",
-    );
-    return null;
-  }
+      if (!response.ok) {
+        throw new Error(`request failed with status ${response.status}`);
+      }
 
-  try {
-    const response = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `bearer ${token}`,
-        "Content-Type": "application/json",
-        "User-Agent": "kevin.languas.co",
-      },
-      body: JSON.stringify({ query: STARRED_REPOSITORIES_QUERY }),
-    });
+      const payload = (await response.json()) as GitHubGraphQLResponse;
 
-    if (!response.ok) {
-      throw new Error(`request failed with status ${response.status}`);
-    }
+      if (payload.errors?.length) {
+        throw new Error(payload.errors.map((error) => error.message).join(", "));
+      }
 
-    const payload = (await response.json()) as GitHubGraphQLResponse;
-
-    if (payload.errors?.length) {
-      throw new Error(payload.errors.map((error) => error.message).join(", "));
-    }
-
-    return payload.data?.viewer?.starredRepositories?.edges ?? null;
-  } catch (error) {
-    if (strict) {
-      throw error;
-    }
-    console.error("Failed to fetch starred repositories from GitHub:", error);
-    return null;
-  }
+      return payload.data?.viewer?.starredRepositories?.edges ?? null;
+    },
+  );
 }

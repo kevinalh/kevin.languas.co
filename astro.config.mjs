@@ -5,8 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   site: "https://kevin.languas.co",
-  // Emit `github.html` instead of `github/index.html` so pages are served
-  // without a trailing slash, matching the URLs of the old Next.js site.
+  // Emit `page.html` instead of `page/index.html` so pages are served without
+  // a trailing slash, matching the URLs of the old Next.js site.
   trailingSlash: "never",
   build: {
     format: "file",
@@ -16,9 +16,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   image: {
-    domains: [
-      "avatars.githubusercontent.com",
-      "repository-images.githubusercontent.com",
-    ],
+    domains: ["avatars.githubusercontent.com"],
   },
 });

@@ -2,7 +2,8 @@
 
 interface ImportMetaEnv {
   readonly GITHUB_ACCESS_TOKEN?: string;
-  readonly GITHUB_FETCH_STRICT?: string;
+  readonly LASTFM_API_KEY?: string;
+  readonly STRICT_FETCH?: string;
 }
 
 interface ImportMeta {

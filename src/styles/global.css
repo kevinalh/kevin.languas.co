@@ -1,6 +1,47 @@
 @import "tailwindcss";
 
+/*
+ * Colors follow the system light or dark setting. Being pure CSS, the right
+ * theme applies on the first paint, with no flash.
+ */
+:root {
+  color-scheme: light dark;
+  /* Sage Ledger. Text shades are mixed from --fg toward --page and keep at
+     least 4.5:1 contrast. */
+  --page: #edf1ec;
+  --fg: #1e2621;
+  --muted: #3d453f;
+  --subtle: #525954;
+  --faint: #666d68;
+  --line: #d3dbd1;
+  --accent: #2e6f40;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Nordic Dusk (Nord). */
+    --page: #2e3440;
+    --fg: #eceff4;
+    --muted: #d8dee9;
+    --subtle: #bcc0c7;
+    --faint: #a0a4ac;
+    --line: #434c5e;
+    --accent: #a3be8c;
+  }
+}
+
+@theme inline {
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+}
+
 body {
+  background-color: var(--page);
+  color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }

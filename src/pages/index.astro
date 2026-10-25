@@ -2,40 +2,78 @@
 import { Image } from "astro:assets";
 import type { Person, WithContext } from "schema-dts";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Footer from "@/components/Footer.astro";
+import RecentlyListening from "@/components/RecentlyListening.astro";
+import RecentlyStarred from "@/components/RecentlyStarred.astro";
+import { Content as Bio } from "@/content/bio.md";
+import { getPageData } from "@/lib/data";
+import { EMAIL, profileLinks } from "@/lib/links";
+import { DESCRIPTION as description, NAME, ROLE } from "@/lib/site";
 
-const bioFontSize = "text-[1.2em] sm:text-[1.5em]";
-const linkClass = "hover:underline";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
+const { topAlbums, repositories } = await getPageData();
 
 const ldSchema: WithContext<Person> = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Kevin Languasco",
-  url: "https://kevin.languas.co",
-  jobTitle: "Data Engineer",
+  name: NAME,
+  url: Astro.site?.href,
+  description,
+  jobTitle: ROLE,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "London",
+    addressCountry: "GB",
+  },
+  nationality: { "@type": "Country", name: "Peru" },
+  knowsAbout: [
+    "Distributed systems",
+    "ClickHouse",
+    "Analytical databases",
+    "Data engineering",
+    "Kubernetes",
+    "Rust",
+    "Go",
+    "Python",
+    "Mathematics",
+  ],
+  worksFor: {
+    "@type": "Organization",
+    name: "Cloudflare",
+    url: "https://www.cloudflare.com",
+  },
   alumniOf: [
     {
       "@type": "CollegeOrUniversity",
       name: "Pontifical Catholic University of Peru",
+      alternateName: ["Pontificia Universidad Católica del Perú", "PUCP"],
       sameAs:
         "https://en.wikipedia.org/wiki/Pontifical_Catholic_University_of_Peru",
     },
   ],
   image: avatarPicture,
-  email: "mailto:kevin+websiteschema@languas.co",
+  email: `mailto:${EMAIL}`,
   givenName: "Kevin",
+  familyName: "Languasco",
   sameAs: [
-    "https://www.linkedin.com/in/kevinalh/",
+    ...profileLinks.map((link) => link.href),
     "https://stackoverflow.com/users/2616577/kevin-languasco/",
-    "https://twitter.com/kevinalh",
   ],
 };
 ---
 
 <BaseLayout
-  title="Kevin Languasco"
-  description="Kevin Languasco's personal website"
-  keywords="data engineering, data science, python, software engineering, Kevin Languasco"
+  title={`${NAME} · ${ROLE}`}
+  description={description}
+  keywords="distributed systems, ClickHouse, analytical databases, data engineering, Kubernetes, Rust, Go, Cloudflare"
+  ogType="profile"
+  image={{
+    // Rendered by scripts/og-image.mjs.
+    src: "/og.png",
+    alt: `${NAME}, ${ROLE} at Cloudflare in London`,
+    width: 1200,
+    height: 630,
+  }}
 >
   <script
     is:inline
@@ -43,6 +81,7 @@ const ldSchema: WithContext<Person> = {
     type="application/ld+json"
     set:html={JSON.stringify(ldSchema)}
   />
+  <link slot="head" rel="alternate" type="text/markdown" href="/index.md" />
 
   <div
     class="mx-5 mt-10 max-w-[1000px] sm:mx-[50px] sm:mt-20 md:mx-[100px] md:mt-[45px]"
@@ -52,57 +91,22 @@ const ldSchema: WithContext<Person> = {
         src={avatarPicture}
         width={200}
         height={200}
+        densities={[1, 2]}
         alt="Kevin Languasco"
         loading="eager"
-        class="rounded-full"
+        class="mx-auto rounded-full ring-4 ring-line md:mx-0"
       />
       <div class="my-10"></div>
       <h1 class="text-3xl font-bold">Hi! I&apos;m Kevin.</h1>
     </div>
     <div class="my-5"></div>
-    <div class="flex flex-col gap-3">
-      <p class={bioFontSize}>
-        I&apos;m a Peruvian engineer currently working at <a
-          class={linkClass}
-          href="https://www.haystack.tv/about-us">Haystack News</a
-        >, a streaming news app for cord cutters with millions of users.
-      </p>
-      <p class={bioFontSize}>
-        I previously worked at <a
-          class={linkClass}
-          href="https://www.lapositiva.com.pe/wps/portal/corporativo/home"
-          >La Positiva Seguros</a
-        >, an insurance company, and got a Bachelors in Mathematics from the <a
-          class={linkClass}
-          href="https://www.pucp.edu.pe/">Pontifical Catholic University of Peru</a
-        >, doing an exchange semester at the <a
-          class={linkClass}
-          href="https://www.ou.edu/">University of Oklahoma</a
-        > and taking PhD-level classes in the Summer Program of the <a
-          class={linkClass}
-          href="https://impa.br/"
-          >Institute of Pure and Applied Mathematics (IMPA)</a
-        > in Rio de Janeiro.
-      </p>
-      <p class={bioFontSize}>
-        I&apos;m passionate about learning new things, no matter the field. For
-        pretty much my whole life I&apos;ve been interested in music (a new
-        obscure music genre I can casually bring up in a conversation? Yes
-        please!), computer stuff (OK but <i>how</i> does WiFi actually encode data
-        in the air?) and <a
-          class={linkClass}
-          href="https://plato.stanford.edu/entries/platonism-mathematics/"
-          >philosophy</a
-        >.
-      </p>
-      <p class={bioFontSize}>
-        My programming language journey can be summarized as follows: I&apos;m
-        the Python guy who was happy to leave the complexities of C++ behind,
-        only to end up using type hinting everywhere after a few years. Now
-        I&apos;m in the process of getting comfortable with Scala and Rust to get
-        the full experience of a strict type system. On the way, learned some
-        TypeScript too.
-      </p>
+    <div
+      class="flex flex-col gap-3 text-[1.2em] sm:text-[1.5em] [&_a]:text-accent [&_a]:hover:underline"
+    >
+      <Bio />
     </div>
+    {topAlbums && <RecentlyListening albums={topAlbums} />}
+    {repositories && <RecentlyStarred repositories={repositories} />}
+    <Footer />
   </div>
 </BaseLayout>

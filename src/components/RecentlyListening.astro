@@ -1,0 +1,44 @@
+---
+import { formatPlays, LASTFM_PROFILE_URL, type TopAlbum } from "@/lib/lastfm";
+
+interface Props {
+  albums: TopAlbum[];
+}
+
+const { albums } = Astro.props;
+---
+
+<section class="mt-12">
+  <h2 class="text-2xl font-bold">Recently listening</h2>
+  <p class="mt-1 text-sm text-subtle">
+    My most played albums this week, via <a
+      class="text-accent hover:underline"
+      href={LASTFM_PROFILE_URL}
+      target="_blank"
+      rel="noopener noreferrer">Last.fm</a
+    >.
+  </p>
+  <ol class="mt-4 divide-y divide-line">
+    {
+      albums.map((album, index) => (
+        <li class="flex items-baseline gap-3 py-2">
+          <span class="w-5 shrink-0 text-right text-sm text-faint tabular-nums">
+            {index + 1}
+          </span>
+          <a
+            href={album.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="min-w-0 flex-1 truncate hover:underline"
+          >
+            <span class="font-semibold">{album.name}</span>
+            <span class="text-muted"> · {album.artist}</span>
+          </a>
+          <span class="shrink-0 text-xs text-subtle tabular-nums">
+            {formatPlays(album.playcount)}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+</section>

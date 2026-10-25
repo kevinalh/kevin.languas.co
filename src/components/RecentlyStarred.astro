@@ -1,0 +1,55 @@
+---
+import { GITHUB_STARS_URL } from "@/lib/links";
+import type { StarredRepository } from "@/lib/types";
+
+interface Props {
+  repositories: StarredRepository[];
+}
+
+const { repositories } = Astro.props;
+---
+
+<section class="mt-12">
+  <h2 class="text-2xl font-bold">Recently starred</h2>
+  <p class="mt-1 text-sm text-subtle">
+    Repositories I&apos;ve starred on GitHub lately. <a
+      class="text-accent hover:underline"
+      href={GITHUB_STARS_URL}
+      target="_blank"
+      rel="noopener noreferrer">See all →</a
+    >
+  </p>
+  <ul class="mt-4 divide-y divide-line">
+    {
+      repositories.map(({ node }) => (
+        <li class="flex items-baseline gap-3 py-2">
+          <a
+            href={node.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="min-w-0 flex-1 truncate hover:underline"
+          >
+            <span class="font-semibold">{node.nameWithOwner}</span>
+            {node.description && (
+              <span class="text-muted"> · {node.description}</span>
+            )}
+          </a>
+          <span class="flex shrink-0 items-center gap-1.5 text-xs text-subtle tabular-nums">
+            {node.primaryLanguage && (
+              <>
+                <span
+                  class="inline-block h-2.5 w-2.5 rounded-full"
+                  style={node.primaryLanguage.color
+                    ? `background-color: ${node.primaryLanguage.color}`
+                    : ""}
+                />
+                <span class="hidden sm:inline">{node.primaryLanguage.name}</span>
+              </>
+            )}
+            <span>★ {node.stargazerCount}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

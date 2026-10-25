@@ -1,8 +1,8 @@
 # The site ships no JavaScript, so the policy allows none. Inline styles are
-# needed for the language color dots on /github, and repo preview images come
-# from GitHub's image hosts.
+# needed for the language color dots on the homepage. The only image, the avatar,
+# is optimized at build time and served from the site itself.
 /*
-  Content-Security-Policy: default-src 'none'; img-src 'self' https://*.githubusercontent.com https://opengraph.githubassets.com; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
@@ -10,3 +10,16 @@
 # Astro emits content-hashed files here, so they can be cached forever.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Icons have fixed URLs, so cache them for a day rather than forever.
+/favicon.svg
+  Cache-Control: public, max-age=86400
+/favicon.ico
+  Cache-Control: public, max-age=86400
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400
+
+# Cloudflare serves .md as text/markdown without a charset, so browsers would
+# misread non-ASCII characters such as "·" and "★".
+/index.md
+  Content-Type: text/markdown; charset=utf-8
