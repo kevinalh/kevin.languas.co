@@ -1,8 +1,13 @@
 # Personal website
 
-This is a small personal website made after I realized I could buy a cool domain name. Pretty standard in terms of content.
+This is a small personal website made after I realized I could buy a cool domain name.
+Pretty standard in terms of content.
 
-The technologies used include [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+The first version was made by hand many years ago using Next.js. It got out of date so
+one day I got Claude to re-make it using [Astro](https://astro.build/), since doing
+that is trivial now.
+
+Fair warning: The rest of this README is AI slop.
 
 ## Development
 
@@ -31,6 +36,10 @@ build time (see `.env.example`), and each is left out when its key is missing:
 - "Recently starred" shows the latest starred repositories from the GitHub
   GraphQL API, using `GITHUB_ACCESS_TOKEN`. The old `/github` page redirects to
   the homepage (see `public/_redirects`).
+
+The bio is written in Markdown in `src/content/bio.md`. Besides the HTML page,
+the build writes a Markdown version of the whole page to `/index.md` (see
+`src/pages/index.md.ts`) for agents and other non-browser readers.
 
 The link preview image, `public/og.png`, is static. Regenerate it with
 `node scripts/og-image.mjs` when the name, role, or avatar changes.
