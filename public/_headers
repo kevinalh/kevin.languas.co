@@ -18,3 +18,8 @@
   Cache-Control: public, max-age=86400
 /apple-touch-icon.png
   Cache-Control: public, max-age=86400
+
+# Cloudflare serves .md as text/markdown without a charset, so browsers would
+# misread non-ASCII characters such as "·" and "★".
+/index.md
+  Content-Type: text/markdown; charset=utf-8
