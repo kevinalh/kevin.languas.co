@@ -2,3 +2,16 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+
+# Fail the install when a dependency wants to run a build script that is not
+# listed in allowBuilds, instead of only warning.
+strictDepBuilds: true
+
+# Fail the install when a package loses provenance or trusted publishing
+# compared to its earlier releases, a common sign of a hijacked account.
+trustPolicy: no-downgrade
+
+overrides:
+  # miniflare (via wrangler 4.152.0) pins undici 7.29.1, which has DoS and SRI
+  # bypass advisories. Remove once wrangler ships a patched undici.
+  "undici@>=7.0.0 <7.30.1": "^7.30.1"

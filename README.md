@@ -43,8 +43,9 @@ Configuration that lives in the Cloudflare dashboard:
 
 | Where | Setting | Value |
 | --- | --- | --- |
-| Settings → Build | Build command | `pnpm check && pnpm build` |
+| Settings → Build | Build command | `pnpm install --frozen-lockfile && pnpm check && pnpm build` |
 | Settings → Build | Deploy command | `pnpm exec wrangler deploy` |
 | Settings → Build → Variables and secrets | `GITHUB_ACCESS_TOKEN` (secret) | Fine-grained GitHub PAT: public repositories read-only, "Starring" read |
 | Settings → Build → Variables and secrets | `GITHUB_FETCH_STRICT` | `true` |
+| Settings → Build → Variables and secrets | `SKIP_DEPENDENCY_INSTALL` | `true` (the build command installs strictly from the lockfile instead) |
 | Settings → Variables & Secrets (runtime) | `DEPLOY_HOOK_URL` (secret) | The Deploy Hook URL for `main` |

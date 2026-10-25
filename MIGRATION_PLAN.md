@@ -485,3 +485,17 @@ once it is stable). No Astro adapter; the build stays fully static.
   as a Workers Builds secret.
 - `.node-version` pins Node 26 for Workers Builds; `pnpm` comes from `packageManager`.
   Keep it in sync with `mise.toml`.
+
+## 10. Security hardening (follow-up)
+
+- History scanned with gitleaks and trufflehog: no secrets (only false positives in the
+  bundled Yarn release and `yarn.lock` integrity hashes).
+- Dependencies updated (astro 7.4.2, sharp 0.35.5, @astrojs/check 0.9.12) and pnpm bumped
+  to 12.15.0; `pnpm audit` is clean. An `overrides` entry patches the `undici` pinned by
+  miniflare; remove it once wrangler ships a fixed version.
+- `pnpm-workspace.yaml` adds `strictDepBuilds` and `trustPolicy: no-downgrade` on top of
+  pnpm 12's defaults (`minimumReleaseAge` 1 day, `blockExoticSubdeps`).
+- Workers Builds installs with `--frozen-lockfile` (`SKIP_DEPENDENCY_INSTALL=true` plus an
+  explicit install in the build command).
+- `public/_headers` sets a strict CSP (the site ships no JavaScript), `nosniff`,
+  `Referrer-Policy`, and `Permissions-Policy`.

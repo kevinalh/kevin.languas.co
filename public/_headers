@@ -1,3 +1,12 @@
+# The site ships no JavaScript, so the policy allows none. Inline styles are
+# needed for the language color dots on /github, and repo preview images come
+# from GitHub's image hosts.
+/*
+  Content-Security-Policy: default-src 'none'; img-src 'self' https://*.githubusercontent.com https://opengraph.githubassets.com; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
 # Astro emits content-hashed files here, so they can be cached forever.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
