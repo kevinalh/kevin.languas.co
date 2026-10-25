@@ -3,12 +3,9 @@ import { EMAIL, profileLinks } from "@/lib/links";
 
 // The page is rebuilt whenever its data is refreshed, so the build time is
 // when the Last.fm and GitHub sections were last fetched.
-const builtAt = new Date();
-const builtAtLabel = new Intl.DateTimeFormat("en-GB", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "UTC",
-}).format(builtAt);
+const builtAt = new Date().toISOString();
+// ISO 8601 date and time to the minute, e.g. "2026-10-25 12:58".
+const builtAtLabel = `${builtAt.slice(0, 10)} ${builtAt.slice(11, 16)}`;
 ---
 
 <footer
@@ -36,6 +33,6 @@ const builtAtLabel = new Intl.DateTimeFormat("en-GB", {
     </li>
   </ul>
   <p class="text-xs sm:ml-auto">
-    Last updated <time datetime={builtAt.toISOString()}>{builtAtLabel} UTC</time>
+    Last updated <time datetime={builtAt}>{builtAtLabel} UTC</time>
   </p>
 </footer>
