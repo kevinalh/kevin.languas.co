@@ -38,14 +38,14 @@ const { albums } = Astro.props;
             {formatPlays(album.playcount)}
           </span>
           {
-            album.listen ? (
+            album.spotifyUrl ? (
               <a
-                href={album.listen.url}
+                href={album.spotifyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="w-4 shrink-0 text-center text-xs text-subtle hover:text-accent"
-                title={`Listen on ${album.listen.service}`}
-                aria-label={`Listen to ${album.name} on ${album.listen.service}`}
+                title="Listen on Spotify"
+                aria-label={`Listen to ${album.name} on Spotify`}
               >
                 {/* U+FE0E keeps the triangle from rendering as an emoji. */}
                 ▶&#xFE0E;

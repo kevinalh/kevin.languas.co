@@ -1,50 +1,27 @@
-import type { AlbumListenLink, TopAlbum } from "./lastfm";
+import type { TopAlbum } from "./lastfm";
 import { USER_AGENT } from "./strict";
 
 /**
  * Finds better destinations for each album than its Last.fm page: the English
  * Wikipedia article and the Spotify album, both through MusicBrainz (and
- * Wikidata), or else a song.link page found through the iTunes Search API.
- * The lookups are best-effort: an album without a match keeps its Last.fm
- * link, and failures never fail the build.
+ * Wikidata). The lookups are best-effort: an album without a match keeps its
+ * Last.fm link, and failures never fail the build.
  */
 export async function addAlbumLinks(albums: TopAlbum[]): Promise<TopAlbum[]> {
-  // The two lookups use different services, so they run side by side. Each
-  // looks up one album at a time to stay within its service's rate limits.
-  const [musicBrainzLinks, songLinkUrls] = await Promise.all([
-    findEach(albums, findMusicBrainzLinks),
-    findEach(albums, findSongLinkUrl),
-  ]);
-  return albums.map((album, index) => {
-    const { wikipediaUrl, spotifyUrl } = musicBrainzLinks[index] ?? {};
-    const songLinkUrl = songLinkUrls[index];
-    let listen: AlbumListenLink | undefined;
-    if (spotifyUrl) {
-      listen = { url: spotifyUrl, service: "Spotify" };
-    } else if (songLinkUrl) {
-      listen = { url: songLinkUrl, service: "your streaming service" };
-    }
-    return { ...album, wikipediaUrl, listen };
-  });
-}
-
-async function findEach<T>(
-  albums: TopAlbum[],
-  find: (album: TopAlbum) => Promise<T | undefined>,
-): Promise<Array<T | undefined>> {
-  const results = [];
+  // One album at a time, to stay within MusicBrainz's rate limit.
+  const linked = [];
   for (const album of albums) {
     try {
-      results.push(await find(album));
+      linked.push({ ...album, ...(await findMusicBrainzLinks(album)) });
     } catch (error) {
       console.warn(
         `Album link lookup failed for "${album.name}":`,
         error instanceof Error ? error.message : error,
       );
-      results.push(undefined);
+      linked.push(album);
     }
   }
-  return results;
+  return linked;
 }
 
 /** Normalizes a title for comparison, ignoring case and edition suffixes. */
@@ -198,47 +175,4 @@ async function findSpotifyUrl(
     (preferred && spotifyUrlOf(preferred)) ??
     releases.map(spotifyUrlOf).find(Boolean)
   );
-}
-
-interface ITunesResult {
-  wrapperType: string;
-  artistId: number;
-  artistName: string;
-  collectionId?: number;
-  collectionName?: string;
-}
-
-function iTunes(endpoint: "search" | "lookup", params: Record<string, string>): URL {
-  const url = new URL(`https://itunes.apple.com/${endpoint}`);
-  url.search = new URLSearchParams(params).toString();
-  return url;
-}
-
-/**
- * Finds the album in the artist's iTunes catalog, which matches far more
- * reliably than a free-text album search, and links its song.link page.
- */
-async function findSongLinkUrl(album: TopAlbum): Promise<string | undefined> {
-  const artists = await getJson<{ results: ITunesResult[] }>(
-    iTunes("search", { term: album.artist, entity: "musicArtist", limit: "5" }),
-  );
-  const artist = artists.results.find(
-    (result) => normalize(result.artistName) === normalize(album.artist),
-  );
-  if (!artist) {
-    return undefined;
-  }
-
-  const catalog = await getJson<{ results: ITunesResult[] }>(
-    iTunes("lookup", { id: String(artist.artistId), entity: "album", limit: "200" }),
-  );
-  const match = catalog.results.find(
-    (result) =>
-      result.wrapperType === "collection" &&
-      result.collectionName &&
-      normalize(result.collectionName) === normalize(album.name),
-  );
-  return match?.collectionId
-    ? `https://album.link/i/${match.collectionId}`
-    : undefined;
 }

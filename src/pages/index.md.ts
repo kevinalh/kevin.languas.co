@@ -27,7 +27,7 @@ export const GET: APIRoute = async () => {
       topAlbums
         .map(
           (album, index) =>
-            `${index + 1}. [${escape(album.name)}](${href(album.wikipediaUrl ?? album.url)}) · ${escape(album.artist)} (${formatPlays(album.playcount)})${album.listen ? ` · [listen on ${album.listen.service}](${href(album.listen.url)})` : ""}`,
+            `${index + 1}. [${escape(album.name)}](${href(album.wikipediaUrl ?? album.url)}) · ${escape(album.artist)} (${formatPlays(album.playcount)})${album.spotifyUrl ? ` · [listen on Spotify](${href(album.spotifyUrl)})` : ""}`,
         )
         .join("\n"),
     );

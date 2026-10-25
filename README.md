@@ -33,9 +33,8 @@ build time (see `.env.example`), and each is left out when its key is missing:
 
 - "Recently listening" shows the week's top albums from Last.fm, using
   `LASTFM_API_KEY`. Each album links to its Wikipedia article when MusicBrainz
-  and Wikidata know one (otherwise to Last.fm), and to its Spotify album from
-  MusicBrainz, or else a song.link page found through the iTunes Search API
-  (see `src/lib/albumLinks.ts`). These lookups
+  and Wikidata know one (otherwise to Last.fm), and to its Spotify album, also
+  from MusicBrainz (see `src/lib/albumLinks.ts`). These lookups
   need no keys and never fail the build.
 - "Recently starred" shows the latest starred repositories from the GitHub
   GraphQL API, using `GITHUB_ACCESS_TOKEN`. The old `/github` page redirects to
