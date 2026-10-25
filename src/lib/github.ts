@@ -1,6 +1,9 @@
 import { buildTimeFetch, USER_AGENT } from "./strict";
 import type { StarredRepository } from "./types";
 
+/** How many starred repositories the homepage shows. */
+const STARRED_REPOSITORIES_COUNT = 10;
+
 const STARRED_REPOSITORIES_QUERY = `
   query StarredRepositories($first: Int!) {
     viewer {
@@ -37,9 +40,7 @@ interface GitHubGraphQLResponse {
 }
 
 /** Fetches the viewer's most recently starred repositories from GitHub. */
-export function getStarredRepositories(
-  first = 10,
-): Promise<StarredRepository[] | null> {
+export function getStarredRepositories(): Promise<StarredRepository[] | null> {
   return buildTimeFetch(
     "GitHub",
     "GITHUB_ACCESS_TOKEN",
@@ -54,7 +55,7 @@ export function getStarredRepositories(
         },
         body: JSON.stringify({
           query: STARRED_REPOSITORIES_QUERY,
-          variables: { first },
+          variables: { first: STARRED_REPOSITORIES_COUNT },
         }),
       });
 

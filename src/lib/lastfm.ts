@@ -23,12 +23,15 @@ interface LastfmTopAlbumsResponse {
   message?: string;
 }
 
+/** How many albums the homepage shows. */
+const TOP_ALBUMS_COUNT = 8;
+
 export function formatPlays(playcount: number): string {
   return `${playcount} ${playcount === 1 ? "play" : "plays"}`;
 }
 
 /** Fetches the albums listened to most in the past week from Last.fm. */
-export function getTopAlbums(limit = 8): Promise<TopAlbum[] | null> {
+export function getTopAlbums(): Promise<TopAlbum[] | null> {
   return buildTimeFetch(
     "Last.fm",
     "LASTFM_API_KEY",
@@ -39,7 +42,7 @@ export function getTopAlbums(limit = 8): Promise<TopAlbum[] | null> {
         method: "user.gettopalbums",
         user: LASTFM_USER,
         period: "7day",
-        limit: String(limit),
+        limit: String(TOP_ALBUMS_COUNT),
         api_key: apiKey,
         format: "json",
       }).toString();
