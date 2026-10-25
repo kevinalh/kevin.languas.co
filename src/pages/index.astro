@@ -2,17 +2,28 @@
 import { Image } from "astro:assets";
 import type { Person, WithContext } from "schema-dts";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import RecentlyListening from "@/components/RecentlyListening.astro";
+import { getTopAlbums, LASTFM_PROFILE_URL } from "@/lib/lastfm";
 
 const bioFontSize = "text-[1.2em] sm:text-[1.5em]";
 const linkClass = "hover:underline";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
+const description =
+  "Kevin Languasco is a Distributed Systems Engineer at Cloudflare, working on the Analytical Database Platform.";
+const topAlbums = await getTopAlbums();
 
 const ldSchema: WithContext<Person> = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Kevin Languasco",
   url: "https://kevin.languas.co",
-  jobTitle: "Data Engineer",
+  description,
+  jobTitle: "Distributed Systems Engineer",
+  worksFor: {
+    "@type": "Organization",
+    name: "Cloudflare",
+    url: "https://www.cloudflare.com",
+  },
   alumniOf: [
     {
       "@type": "CollegeOrUniversity",
@@ -25,17 +36,19 @@ const ldSchema: WithContext<Person> = {
   email: "mailto:kevin+websiteschema@languas.co",
   givenName: "Kevin",
   sameAs: [
+    "https://github.com/kevinalh",
     "https://www.linkedin.com/in/kevinalh/",
     "https://stackoverflow.com/users/2616577/kevin-languasco/",
     "https://twitter.com/kevinalh",
+    LASTFM_PROFILE_URL,
   ],
 };
 ---
 
 <BaseLayout
   title="Kevin Languasco"
-  description="Kevin Languasco's personal website"
-  keywords="data engineering, data science, python, software engineering, Kevin Languasco"
+  description={description}
+  keywords="distributed systems, analytical databases, data engineering, Cloudflare, Kevin Languasco"
 >
   <script
     is:inline
@@ -104,5 +117,6 @@ const ldSchema: WithContext<Person> = {
         TypeScript too.
       </p>
     </div>
+    {topAlbums && topAlbums.length > 0 && <RecentlyListening albums={topAlbums} />}
   </div>
 </BaseLayout>

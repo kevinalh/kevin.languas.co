@@ -1,0 +1,55 @@
+---
+import { LASTFM_PROFILE_URL, type TopAlbum } from "@/lib/lastfm";
+
+interface Props {
+  albums: TopAlbum[];
+}
+
+const { albums } = Astro.props;
+---
+
+<section class="mt-12">
+  <h2 class="text-2xl font-bold">Recently listening</h2>
+  <p class="mt-1 text-sm text-gray-500">
+    My most played albums this week, via <a
+      class="hover:underline"
+      href={LASTFM_PROFILE_URL}
+      target="_blank"
+      rel="noopener noreferrer">Last.fm</a
+    >.
+  </p>
+  <ol class="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-4">
+    {
+      albums.map((album) => (
+        <li>
+          <a
+            href={album.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block"
+          >
+            {album.imageUrl ? (
+              <img
+                src={album.imageUrl}
+                alt={`${album.name} by ${album.artist}`}
+                width="300"
+                height="300"
+                loading="lazy"
+                class="aspect-square w-full rounded-md object-cover shadow-md"
+              />
+            ) : (
+              <div class="aspect-square w-full rounded-md bg-gray-200 shadow-md" />
+            )}
+            <p class="mt-2 truncate font-semibold group-hover:underline">
+              {album.name}
+            </p>
+            <p class="truncate text-sm text-gray-600">{album.artist}</p>
+            <p class="text-xs text-gray-500">
+              {album.playcount} {album.playcount === 1 ? "play" : "plays"}
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</section>

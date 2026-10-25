@@ -23,9 +23,12 @@ pnpm cf:preview  # build and serve dist/ with Wrangler, as Cloudflare would
 pnpm check       # type-check .astro files
 ```
 
-The `/github` page reads the viewer's starred repositories from the GitHub
-GraphQL API at build time. Set `GITHUB_ACCESS_TOKEN` (see `.env.example`) to
-enable it; without a token the page renders a fallback message instead.
+Two sections are filled with data fetched at build time (see `.env.example`):
+
+- `/github` shows the viewer's starred repositories from the GitHub GraphQL API,
+  using `GITHUB_ACCESS_TOKEN`. Without it the page renders a fallback message.
+- The homepage's "Recently listening" section shows the week's top albums from
+  Last.fm, using `LASTFM_API_KEY`. Without it the section is left out.
 
 The site is hosted on [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)
 as static assets (see `wrangler.jsonc`), built and deployed by
@@ -33,11 +36,11 @@ as static assets (see `wrangler.jsonc`), built and deployed by
 push to `main`, with preview builds for other branches. No Cloudflare API token
 is stored anywhere outside Cloudflare.
 
-To keep `/github` fresh, the small Worker in `worker/index.ts` runs on a cron
+To keep that data fresh, the small Worker in `worker/index.ts` runs on a cron
 every 6 hours and calls a Workers Builds
 [Deploy Hook](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/),
-which rebuilds the site. Builds set `GITHUB_FETCH_STRICT=true`, so a failed
-GitHub fetch fails the build and the last good deploy stays live.
+which rebuilds the site. Builds set `STRICT_FETCH=true`, so a failed fetch
+fails the build and the last good deploy stays live.
 
 Configuration that lives in the Cloudflare dashboard:
 
@@ -46,6 +49,7 @@ Configuration that lives in the Cloudflare dashboard:
 | Settings → Build | Build command | `pnpm install --frozen-lockfile && pnpm check && pnpm build` |
 | Settings → Build | Deploy command | `pnpm exec wrangler deploy` |
 | Settings → Build → Variables and secrets | `GITHUB_ACCESS_TOKEN` (secret) | Fine-grained GitHub PAT: public repositories read-only, "Starring" read |
-| Settings → Build → Variables and secrets | `GITHUB_FETCH_STRICT` | `true` |
+| Settings → Build → Variables and secrets | `LASTFM_API_KEY` (secret) | Last.fm API key |
+| Settings → Build → Variables and secrets | `STRICT_FETCH` | `true` |
 | Settings → Build → Variables and secrets | `SKIP_DEPENDENCY_INSTALL` | `true` (the build command installs strictly from the lockfile instead) |
 | Settings → Variables & Secrets (runtime) | `DEPLOY_HOOK_URL` (secret) | The Deploy Hook URL for `main` |
