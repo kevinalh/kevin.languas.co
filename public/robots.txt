@@ -1,5 +1,8 @@
 # *
 User-agent: *
+# Content Signals (https://contentsignals.org): allow search indexing and
+# real-time AI answers, but not model training.
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # Host
