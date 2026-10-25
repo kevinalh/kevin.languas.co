@@ -2,19 +2,30 @@
 
 This is a small personal website made after I realized I could buy a cool domain name. Pretty standard in terms of content.
 
-The technologies used include [Next.js](https://nextjs.org/) and [Chakra UI](https://chakra-ui.com/). Definitely an overkill but hey, it was a small learning experience :)
+The technologies used include [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
 ## Development
 
-I'm using version 3 of [Yarn](https://yarnpkg.com/) with [Plug'n'Play](https://yarnpkg.com/features/pnp) activated.
-After installing dependencies, running the website locally is done via
+Dependencies are managed with [pnpm](https://pnpm.io/), and the Node.js/pnpm
+versions are pinned in `mise.toml`. After installing dependencies:
 
 ```bash
-yarn dev
+pnpm install
+pnpm dev
 ```
 
-Deployment is done via [Vercel](https://vercel.com/). Each commit to the `main` branch triggers a deploy process.
+Other useful scripts:
 
-### VSCode setup
+```bash
+pnpm build    # build the static site into dist/
+pnpm preview  # preview the production build locally
+pnpm check    # type-check .astro files
+```
 
-To work with Yarn, we need to install the [ZipFS extension](https://github.com/yarnpkg/berry/tree/master/packages/vscode-zipfs).
+The `/github` page reads the viewer's starred repositories from the GitHub
+GraphQL API at build time. Set `GITHUB_ACCESS_TOKEN` (see `.env.example`) to
+enable it; without a token the page renders a fallback message instead.
+
+Deployment is done by building the static output in `dist/` and serving it from
+any static host. Each commit to the `main` branch currently triggers a deploy
+process.

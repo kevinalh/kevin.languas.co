@@ -1,0 +1,33 @@
+---
+import "@/styles/global.css";
+import Nav from "@/components/Nav.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+}
+
+const { title, description, keywords } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {keywords && <meta name="keywords" content={keywords} />}
+    <link rel="canonical" href={canonical} />
+    <slot name="head" />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
