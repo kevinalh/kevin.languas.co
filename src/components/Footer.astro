@@ -1,8 +1,19 @@
 ---
 import { EMAIL, profileLinks } from "@/lib/links";
+
+// The page is rebuilt whenever its data is refreshed, so the build time is
+// when the Last.fm and GitHub sections were last fetched.
+const builtAt = new Date();
+const builtAtLabel = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "UTC",
+}).format(builtAt);
 ---
 
-<footer class="mt-16 border-t border-gray-200 py-6 text-sm text-gray-500">
+<footer
+  class="mt-16 flex flex-col gap-3 border-t border-gray-200 py-6 text-sm text-gray-500 sm:flex-row sm:items-baseline"
+>
   <ul class="flex flex-wrap gap-x-5 gap-y-2">
     {
       profileLinks.map((link) => (
@@ -24,4 +35,7 @@ import { EMAIL, profileLinks } from "@/lib/links";
       >
     </li>
   </ul>
+  <p class="text-xs sm:ml-auto">
+    Last updated <time datetime={builtAt.toISOString()}>{builtAtLabel} UTC</time>
+  </p>
 </footer>
