@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { rawContent as bio } from "@/content/bio.md";
 import { getPageData } from "@/lib/data";
-import { formatPlays, LASTFM_PROFILE_URL } from "@/lib/lastfm";
+import { formatPlays, formatStats, LASTFM_PROFILE_URL } from "@/lib/lastfm";
 import { EMAIL, GITHUB_STARS_URL, profileLinks } from "@/lib/links";
 import { builtAtLabel, DESCRIPTION, NAME } from "@/lib/site";
 
@@ -17,13 +17,13 @@ function href(url: string): string {
 
 /** The homepage as Markdown, for agents and other non-browser readers. */
 export const GET: APIRoute = async () => {
-  const { topAlbums, repositories } = await getPageData();
+  const { topAlbums, listeningStats, repositories } = await getPageData();
   const sections = [`# ${NAME}`, DESCRIPTION, bio().trim()];
 
   if (topAlbums) {
     sections.push(
       "## Recently listening",
-      `My most played albums this week, via [Last.fm](${LASTFM_PROFILE_URL}).`,
+      `My most played albums this week, via [Last.fm](${LASTFM_PROFILE_URL}).${listeningStats ? ` ${formatStats(listeningStats)}.` : ""}`,
       topAlbums
         .map(
           (album, index) =>

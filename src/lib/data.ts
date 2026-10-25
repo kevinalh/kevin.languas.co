@@ -1,17 +1,19 @@
 import { addAlbumLinks } from "./albumLinks";
 import { getStarredRepositories } from "./github";
-import { getTopAlbums } from "./lastfm";
+import { getListeningStats, getTopAlbums } from "./lastfm";
 
 let pageData: ReturnType<typeof load> | undefined;
 
 async function load() {
-  const [topAlbums, repositories] = await Promise.all([
+  const [topAlbums, listeningStats, repositories] = await Promise.all([
     getTopAlbums(),
+    getListeningStats(),
     getStarredRepositories(),
   ]);
   // Treat empty lists like missing data, so callers only check for null.
   return {
     topAlbums: topAlbums?.length ? await addAlbumLinks(topAlbums) : null,
+    listeningStats,
     repositories: repositories?.length ? repositories : null,
   };
 }

@@ -1,11 +1,18 @@
 ---
-import { formatPlays, LASTFM_PROFILE_URL, type TopAlbum } from "@/lib/lastfm";
+import {
+  formatPlays,
+  formatStats,
+  LASTFM_PROFILE_URL,
+  type ListeningStats,
+  type TopAlbum,
+} from "@/lib/lastfm";
 
 interface Props {
   albums: TopAlbum[];
+  stats: ListeningStats | null;
 }
 
-const { albums } = Astro.props;
+const { albums, stats } = Astro.props;
 ---
 
 <section class="mt-12">
@@ -16,7 +23,7 @@ const { albums } = Astro.props;
       href={LASTFM_PROFILE_URL}
       target="_blank"
       rel="noopener noreferrer">Last.fm</a
-    >.
+    >.{stats && ` ${formatStats(stats)}.`}
   </p>
   <ol class="mt-4 divide-y divide-line">
     {

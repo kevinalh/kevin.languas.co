@@ -11,7 +11,7 @@ import { EMAIL, profileLinks } from "@/lib/links";
 import { DESCRIPTION as description, NAME, ROLE } from "@/lib/site";
 
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
-const { topAlbums, repositories } = await getPageData();
+const { topAlbums, listeningStats, repositories } = await getPageData();
 
 const person: Person = {
   "@type": "Person",
@@ -117,7 +117,7 @@ const ldSchema: WithContext<ProfilePage> = {
     >
       <Bio />
     </div>
-    {topAlbums && <RecentlyListening albums={topAlbums} />}
+    {topAlbums && <RecentlyListening albums={topAlbums} stats={listeningStats} />}
     {repositories && <RecentlyStarred repositories={repositories} />}
     <Footer />
   </div>
