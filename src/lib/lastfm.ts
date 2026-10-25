@@ -8,12 +8,6 @@ export interface TopAlbum {
   artist: string;
   url: string;
   playcount: number;
-  imageUrl: string | null;
-}
-
-interface LastfmImage {
-  size: string;
-  "#text": string;
 }
 
 interface LastfmTopAlbumsResponse {
@@ -23,7 +17,6 @@ interface LastfmTopAlbumsResponse {
       playcount: string;
       url: string;
       artist: { name: string };
-      image?: LastfmImage[];
     }>;
   };
   error?: number;
@@ -31,8 +24,8 @@ interface LastfmTopAlbumsResponse {
 }
 
 /** Only keep HTTPS URLs from the API response. */
-function httpsUrl(value: string | undefined): string | null {
-  return value?.startsWith("https://") ? value : null;
+function httpsUrl(value: string): string | null {
+  return value.startsWith("https://") ? value : null;
 }
 
 /**
@@ -80,14 +73,12 @@ export async function getTopAlbums(limit = 8): Promise<TopAlbum[] | null> {
       if (!albumUrl) {
         return [];
       }
-      const image = album.image?.find((i) => i.size === "extralarge");
       return [
         {
           name: album.name,
           artist: album.artist.name,
           url: albumUrl,
           playcount: Number(album.playcount),
-          imageUrl: httpsUrl(image?.["#text"]),
         },
       ];
     });

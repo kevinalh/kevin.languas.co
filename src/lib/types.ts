@@ -10,7 +10,6 @@ export interface RepositoryNode {
   description: string | null;
   url: string;
   stargazerCount: number;
-  openGraphImageUrl: string;
   primaryLanguage: RepositoryLanguage | null;
 }
 

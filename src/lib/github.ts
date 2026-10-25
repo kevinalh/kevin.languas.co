@@ -25,7 +25,6 @@ const STARRED_REPOSITORIES_QUERY = `
             description
             url
             stargazerCount
-            openGraphImageUrl
             primaryLanguage {
               name
               color

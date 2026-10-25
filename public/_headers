@@ -1,8 +1,8 @@
 # The site ships no JavaScript, so the policy allows none. Inline styles are
-# needed for the language color dots on /github. Images come from GitHub's
-# image hosts and Last.fm's album art CDN.
+# needed for the language color dots on /github. The only image, the avatar,
+# is optimized at build time and served from the site itself.
 /*
-  Content-Security-Policy: default-src 'none'; img-src 'self' https://*.githubusercontent.com https://opengraph.githubassets.com https://lastfm.freetls.fastly.net; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
