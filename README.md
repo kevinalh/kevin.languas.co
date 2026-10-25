@@ -54,7 +54,7 @@ push to `main`, with preview builds for other branches. No Cloudflare API token
 is stored anywhere outside Cloudflare.
 
 To keep that data fresh, the small Worker in `worker/index.ts` runs on a cron
-every 6 hours and calls a Workers Builds
+daily at 06:00 UTC and calls a Workers Builds
 [Deploy Hook](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/),
 which rebuilds the site. Builds set `STRICT_FETCH=true`, so a failed fetch
 fails the build and the last good deploy stays live.

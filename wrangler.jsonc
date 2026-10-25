@@ -11,8 +11,8 @@
     "not_found_handling": "404-page"
   },
   "triggers": {
-    // Rebuild every 6 hours to refresh the Last.fm and GitHub sections.
-    "crons": ["0 */6 * * *"]
+    // Rebuild daily at 06:00 UTC to refresh the Last.fm and GitHub sections.
+    "crons": ["0 6 * * *"]
   },
   "secrets": {
     "required": ["DEPLOY_HOOK_URL"]
