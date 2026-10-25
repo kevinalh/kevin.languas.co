@@ -1,0 +1,38 @@
+---
+import "@/styles/global.css";
+import Nav from "@/components/Nav.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+}
+
+const { title, description, keywords } = Astro.props;
+// With `build.format: "file"` the pathname ends in `.html`; strip it so the
+// canonical URL matches the extensionless URL Cloudflare serves.
+const pathname = Astro.url.pathname
+  .replace(/(^|\/)index\.html$/, "$1")
+  .replace(/\.html$/, "");
+const canonical = new URL(pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {keywords && <meta name="keywords" content={keywords} />}
+    <link rel="canonical" href={canonical} />
+    <slot name="head" />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

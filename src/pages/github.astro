@@ -1,0 +1,24 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import RepositoryCard from "@/components/RepositoryCard.astro";
+import { getStarredRepositories } from "@/lib/github";
+
+const repositories = await getStarredRepositories();
+---
+
+<BaseLayout
+  title="GitHub Stars · Kevin Languasco"
+  description="Repositories starred by Kevin Languasco on GitHub."
+>
+  {
+    repositories == null ? (
+      <div class="p-8 text-center">Couldn&apos;t load the repositories!</div>
+    ) : (
+      <div class="flex flex-col items-center gap-4 py-6">
+        {repositories.map((repository) => (
+          <RepositoryCard repository={repository} />
+        ))}
+      </div>
+    )
+  }
+</BaseLayout>

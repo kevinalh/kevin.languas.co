@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["esnext"],
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  // Runtime and binding types come from `wrangler types`.
+  "include": ["./**/*.ts", "../worker-configuration.d.ts"]
+}
