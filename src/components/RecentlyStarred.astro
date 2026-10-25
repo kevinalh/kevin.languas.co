@@ -11,7 +11,7 @@ const { repositories } = Astro.props;
 
 <section class="mt-12">
   <h2 class="text-2xl font-bold">Recently starred</h2>
-  <p class="mt-1 text-sm text-gray-500">
+  <p class="mt-1 text-sm text-subtle">
     Repositories I&apos;ve starred on GitHub lately. <a
       class="hover:underline"
       href={GITHUB_STARS_URL}
@@ -19,7 +19,7 @@ const { repositories } = Astro.props;
       rel="noopener noreferrer">See all →</a
     >
   </p>
-  <ul class="mt-4 divide-y divide-gray-200">
+  <ul class="mt-4 divide-y divide-line">
     {
       repositories.map(({ node }) => (
         <li class="flex items-baseline gap-3 py-2">
@@ -31,10 +31,10 @@ const { repositories } = Astro.props;
           >
             <span class="font-semibold">{node.nameWithOwner}</span>
             {node.description && (
-              <span class="text-gray-600"> · {node.description}</span>
+              <span class="text-muted"> · {node.description}</span>
             )}
           </a>
-          <span class="flex shrink-0 items-center gap-1.5 text-xs text-gray-500 tabular-nums">
+          <span class="flex shrink-0 items-center gap-1.5 text-xs text-subtle tabular-nums">
             {node.primaryLanguage && (
               <>
                 <span

@@ -9,7 +9,7 @@ const builtAtLabel = `${builtAt.slice(0, 10)} ${builtAt.slice(11, 16)}`;
 ---
 
 <footer
-  class="mt-16 flex flex-col gap-3 border-t border-gray-200 py-6 text-sm text-gray-500 sm:flex-row sm:items-baseline"
+  class="mt-16 flex flex-col gap-3 border-t border-line py-6 text-sm text-subtle sm:flex-row sm:items-baseline"
 >
   <ul class="flex flex-wrap gap-x-5 gap-y-2">
     {
@@ -19,7 +19,7 @@ const builtAtLabel = `${builtAt.slice(0, 10)} ${builtAt.slice(11, 16)}`;
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-gray-800 hover:underline"
+            class="hover:text-fg hover:underline"
           >
             {link.label}
           </a>
@@ -27,7 +27,7 @@ const builtAtLabel = `${builtAt.slice(0, 10)} ${builtAt.slice(11, 16)}`;
       ))
     }
     <li>
-      <a href={`mailto:${EMAIL}`} class="hover:text-gray-800 hover:underline"
+      <a href={`mailto:${EMAIL}`} class="hover:text-fg hover:underline"
         >Email</a
       >
     </li>

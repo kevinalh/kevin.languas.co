@@ -1,6 +1,41 @@
 @import "tailwindcss";
 
+/*
+ * Colors follow the system light or dark setting. Being pure CSS, the right
+ * theme applies on the first paint, with no flash.
+ */
+:root {
+  color-scheme: light dark;
+  --page: var(--color-white);
+  --fg: var(--color-gray-950);
+  --muted: var(--color-gray-600);
+  --subtle: var(--color-gray-500);
+  --faint: var(--color-gray-400);
+  --line: var(--color-gray-200);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: var(--color-gray-950);
+    --fg: var(--color-gray-100);
+    --muted: var(--color-gray-300);
+    --subtle: var(--color-gray-400);
+    --faint: var(--color-gray-500);
+    --line: var(--color-gray-800);
+  }
+}
+
+@theme inline {
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+}
+
 body {
+  background-color: var(--page);
+  color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
