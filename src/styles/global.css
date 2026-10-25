@@ -39,6 +39,19 @@
   --color-accent: var(--accent);
 }
 
+/* Links within text. The underline keeps them distinguishable without relying
+   on color alone. */
+@utility link {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
 body {
   background-color: var(--page);
   color: var(--fg);
