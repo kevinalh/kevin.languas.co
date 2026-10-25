@@ -5,9 +5,13 @@ interface Props {
   title: string;
   description?: string;
   keywords?: string;
+  /** Open Graph type of the page, e.g. "profile" for the homepage. */
+  ogType?: string;
+  /** Absolute URL of the image shown in link previews. */
+  image?: { src: string; alt: string };
 }
 
-const { title, description, keywords } = Astro.props;
+const { title, description, keywords, ogType = "website", image } = Astro.props;
 // With `build.format: "file"` the pathname ends in `.html`; strip it so the
 // canonical URL matches the extensionless URL Cloudflare serves.
 const pathname = Astro.url.pathname
@@ -28,6 +32,17 @@ const canonical = new URL(pathname, Astro.site).href;
     {description && <meta name="description" content={description} />}
     {keywords && <meta name="keywords" content={keywords} />}
     <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#edf1ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2e3440" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Kevin Languasco" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={image.src} />}
+    {image && <meta property="og:image:alt" content={image.alt} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@kevinalh" />
     <slot name="head" />
   </head>
   <body>

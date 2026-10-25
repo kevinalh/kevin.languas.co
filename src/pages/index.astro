@@ -13,7 +13,7 @@ const bioFontSize = "text-[1.2em] sm:text-[1.5em]";
 const linkClass = "text-accent hover:underline";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
 const description =
-  "Kevin Languasco is a Distributed Systems Engineer at Cloudflare, working on the Analytical Database Platform.";
+  "Kevin Languasco is a Distributed Systems Engineer at Cloudflare in London, working on the ClickHouse-based Analytical Database Platform.";
 const [topAlbums, repositories] = await Promise.all([
   getTopAlbums(),
   getStarredRepositories(),
@@ -23,9 +23,26 @@ const ldSchema: WithContext<Person> = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Kevin Languasco",
-  url: "https://kevin.languas.co",
+  url: "https://kevin.languas.co/",
   description,
   jobTitle: "Distributed Systems Engineer",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "London",
+    addressCountry: "GB",
+  },
+  nationality: { "@type": "Country", name: "Peru" },
+  knowsAbout: [
+    "Distributed systems",
+    "ClickHouse",
+    "Analytical databases",
+    "Data engineering",
+    "Kubernetes",
+    "Rust",
+    "Go",
+    "Python",
+    "Mathematics",
+  ],
   worksFor: {
     "@type": "Organization",
     name: "Cloudflare",
@@ -35,6 +52,7 @@ const ldSchema: WithContext<Person> = {
     {
       "@type": "CollegeOrUniversity",
       name: "Pontifical Catholic University of Peru",
+      alternateName: ["Pontificia Universidad Católica del Perú", "PUCP"],
       sameAs:
         "https://en.wikipedia.org/wiki/Pontifical_Catholic_University_of_Peru",
     },
@@ -42,6 +60,7 @@ const ldSchema: WithContext<Person> = {
   image: avatarPicture,
   email: `mailto:${EMAIL}`,
   givenName: "Kevin",
+  familyName: "Languasco",
   sameAs: [
     ...profileLinks.map((link) => link.href),
     "https://stackoverflow.com/users/2616577/kevin-languasco/",
@@ -50,9 +69,11 @@ const ldSchema: WithContext<Person> = {
 ---
 
 <BaseLayout
-  title="Kevin Languasco"
+  title="Kevin Languasco · Distributed Systems Engineer"
   description={description}
-  keywords="distributed systems, analytical databases, data engineering, Cloudflare, Kevin Languasco"
+  keywords="distributed systems, ClickHouse, analytical databases, data engineering, Kubernetes, Rust, Go, Cloudflare"
+  ogType="profile"
+  image={{ src: avatarPicture, alt: "Kevin Languasco" }}
 >
   <script
     is:inline
@@ -82,11 +103,14 @@ const ldSchema: WithContext<Person> = {
       <p class={bioFontSize}>
         I&apos;m a Peruvian engineer currently working at <a
           class={linkClass}
-          href="https://www.haystack.tv/about-us">Haystack News</a
-        >, a streaming news app for cord cutters with millions of users.
+          href="https://www.cloudflare.com">Cloudflare</a
+        > in London, on the Analytical Database Platform.
       </p>
       <p class={bioFontSize}>
         I previously worked at <a
+          class={linkClass}
+          href="https://www.haystack.tv/about-us">Haystack News</a
+        >, a streaming news app for cord cutters with millions of users, and <a
           class={linkClass}
           href="https://www.lapositiva.com.pe/wps/portal/corporativo/home"
           >La Positiva Seguros</a
