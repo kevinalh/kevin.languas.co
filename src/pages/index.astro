@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import type { Person, WithContext } from "schema-dts";
+import type { Person, ProfilePage, WithContext } from "schema-dts";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Footer from "@/components/Footer.astro";
 import RecentlyListening from "@/components/RecentlyListening.astro";
@@ -13,8 +13,7 @@ import { DESCRIPTION as description, NAME, ROLE } from "@/lib/site";
 const avatarPicture = "https://avatars.githubusercontent.com/u/3322228";
 const { topAlbums, repositories } = await getPageData();
 
-const ldSchema: WithContext<Person> = {
-  "@context": "https://schema.org",
+const person: Person = {
   "@type": "Person",
   name: NAME,
   url: Astro.site?.href,
@@ -59,6 +58,17 @@ const ldSchema: WithContext<Person> = {
     ...profileLinks.map((link) => link.href),
     "https://stackoverflow.com/users/2616577/kevin-languasco/",
   ],
+};
+
+// Google reads ProfilePage as a profile result. dateModified is left out
+// because it should only change on human edits, not on the scheduled rebuilds.
+const ldSchema: WithContext<ProfilePage> = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: Astro.site?.href,
+  // The site's first commit.
+  dateCreated: "2021-09-18T15:27:58-05:00",
+  mainEntity: person,
 };
 ---
 
