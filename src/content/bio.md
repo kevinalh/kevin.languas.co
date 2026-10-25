@@ -1,7 +1,12 @@
-I'm a Peruvian engineer currently working at [Cloudflare](https://www.cloudflare.com) in London, on the ClickHouse Platform.
+---
+date created: Sunday, October 25th 2026, 1:57:43 pm
+date modified: Sunday, October 25th 2026, 2:58:31 pm
+---
 
-I previously worked at [Haystack News](https://www.haystack.tv/about-us), a streaming news app for cord cutters with millions of users, and [La Positiva Seguros](https://www.lapositiva.com.pe/wps/portal/corporativo/home), an insurance company, and got a Bachelors in Mathematics from the [Pontifical Catholic University of Peru](https://www.pucp.edu.pe/), doing an exchange semester at the [University of Oklahoma](https://www.ou.edu/) and taking PhD-level classes in the Summer Program of the [Institute of Pure and Applied Mathematics (IMPA)](https://impa.br/) in Rio de Janeiro.
+I'm a software engineer based in London, where I work at [Cloudflare](https://www.cloudflare.com) as a Distributed Systems Engineer on the ClickHouse Platform team. Most of what I build nowadays is in Rust or Go, with AI assistance of course.
 
-I'm passionate about learning new things, no matter the field. For pretty much my whole life I've been interested in music (a new obscure music genre I can casually bring up in a conversation? Yes please!), computer stuff (OK but _how_ does WiFi actually encode data in the air?) and [philosophy](https://plato.stanford.edu/entries/platonism-mathematics/).
+Before that, I spent four years as the lead data engineer at [Haystack News](https://www.haystack.tv/about-us), a San Francisco news streaming startup, where I led the data platform evolution as we scaled to millions of users. Earlier, I was a backend engineer at [La Positiva Seguros](https://www.lapositiva.com.pe/wps/portal/corporativo/home), an insurance company in Peru.
 
-My programming language journey can be summarized as follows: I'm the Python guy who was happy to leave the complexities of C++ behind, only to end up using type hinting everywhere after a few years. Now I'm in the process of getting comfortable with Scala and Rust to get the full experience of a strict type system. On the way, learned some TypeScript too.
+I studied mathematics at the [Pontifical Catholic University of Peru](https://www.pucp.edu.pe/), doing an exchange semester at the [University of Oklahoma](https://www.ou.edu/) and taking PhD-level classes in the Summer Program of the [Institute of Pure and Applied Mathematics (IMPA)](https://impa.br/) in Rio de Janeiro.
+
+I'm passionate about music, tracking everything I listen to on [Last.fm](https://www.last.fm/user/kevinalh) since 2014. I also play bass and guitar regularly. In a past life I enjoyed answering questions on [Stack Overflow](https://stackoverflow.com/users/2616577/kevin-languasco).
