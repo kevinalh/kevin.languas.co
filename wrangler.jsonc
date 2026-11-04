@@ -14,6 +14,10 @@
     // Rebuild daily at 06:00 UTC to refresh the Last.fm and GitHub sections.
     "crons": ["0 6 * * *"]
   },
+  // Workers Logs, so cron failures show their exception message.
+  "observability": {
+    "enabled": true
+  },
   "secrets": {
     "required": ["DEPLOY_HOOK_URL"]
   },
