@@ -1,3 +1,6 @@
 # The GitHub stars page was merged into the homepage.
 /github / 301
 /github/ / 301
+
+# The Next.js site served /sitemap.xml; @astrojs/sitemap writes /sitemap-index.xml.
+/sitemap.xml /sitemap-index.xml 301
